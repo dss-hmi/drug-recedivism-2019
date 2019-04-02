@@ -17,140 +17,94 @@ library(magrittr) #Pipes
 library(dplyr) # disable when temp lines are removed
 library(ggplot2)
 library(ggpubr)
+library(readxl)
 # ---- declare-globals ---------------------------------------------------------
-path_file_input_data       <- "./data-unshared/derived/saveData_SYTYCG_Season1.csv"
-path_file_input_parameters <- "./data-unshared/derived/saveParams_SYTYCG_Season1.csv"
+# path_file_input_data       <- "./data-unshared/raw/2016-03-25 - AllSentences_small.xlsx"
+# path_file_input_data       <- "./data-unshared/raw/2017-10-04  AllSentences_updated_small.xlsx"
+path_file_input_data       <- "./data-unshared/raw/2017-10-04  AllSentences_updated.xlsx"
+# path_file_input_parameters <- "./data-unshared/derived/saveParams_SYTYCG_Season1.csv"
 # ---- load-data ---------------------------------------------------------------
-ds      <- readr::read_csv(path_file_input_data); ds %>% glimpse()
-ds_pars <- readr::read_csv(path_file_input_parameters); ds_pars %>% glimpse()
+ds      <- readxl::read_excel(path_file_input_data,sheet = "AllSentences" )
+meta      <- readxl::read_excel(path_file_input_data,sheet = "Codebook" )
 
-ds %>% head()
+ds %>% dplyr::glimpse(80)
+
 # ---- tweak-data ---------------------------------------------------------------
+names(ds)
+# d1 <- ds %>% 
+#   dplyr::select(.dots = c(
+#     "Idnumbercomb"
+#     ,"Offense Begin Date"
+#     ,"Begin Date"
+#     ,"Offense Arrest CD"
+#     ,"Offense Arrest"
+#   ))
+d1 <- ds[c(
+  "Idnumbercomb"
+  # ,"Offense Begin Date"
+  ,"Begin Date"
+  ,"Offense Arrest CD" # code
+  ,"Offense Arrest"    # description
+)]
+
+names(d1) <- c(
+  "person_id"
+  # , "offense_begin_date"
+  , "begin_date"
+  , "offense_arrest_cd"
+  , "offense_arrest"
+)
+
+d1 %>% glimpse()
+
+d2 <- d1 %>% 
+  dplyr::mutate(
+    conviction_id = paste0(person_id,"-",offense_arrest_cd)
+    ,year = lubridate::year(begin_date)
+    # ,offense_group = gsub("^(\\w{1}(\\d{2}))$","\\1", offense_arrest_cd)
+    ,offense_group = substr(offense_arrest_cd,1,1)
+  )
+
+d2 %>% glimpse()
+# ---- basic-table ----------------------------
+
+# type of offense total
+d2 %>% 
+  dplyr::filter(year > 1974) %>% 
+  dplyr::group_by(offense_group) %>% 
+  dplyr::count() %>% 
+  ggplot2::ggplot(aes(x = offense_group, y = n ))+
+  geom_bar(stat = "identity")+
+  coord_flip()+
+  theme_minimal()
+
+# type of offsen by year
+d2 %>% 
+  dplyr::filter(year > 1974) %>% 
+  dplyr::group_by(offense_group, year) %>% 
+  dplyr::count() %>% 
+  ggplot2::ggplot(aes(x = year, y = offense_group, fill = n ))+
+  geom_raster()+
+  # coord_flip()+
+  theme_minimal()
+
+
+# type of drug offense by year
+d2 %>% 
+  dplyr::filter(year > 1974) %>% 
+  dplyr::filter(offense_group == "C") %>% 
+  dplyr::group_by(offense_arrest, year) %>% 
+  dplyr::count() %>% 
+  ggplot2::ggplot(aes(x = year, y = offense_arrest, fill = n ))+
+  geom_raster()+
+  # coord_flip()+
+  theme_minimal()
+
+# see our research jounal https://docs.google.com/document/d/1_EhkXgkBZTJ8nc02rr8Z4wrbzSbvvT6VZoQJi6DAhNQ/edit?usp=sharing
+
+
 
 # ---- basic-graph -------------------------------------------------------
-
-t1 <- ds %>% 
-  dplyr::filter(graphNum == 12) 
-
-# start with a basic boxplot
-# see https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html
-
-# boxplot
-g1 <- t1 %>% 
-  ggpubr::ggboxplot(
-    x         = "group"
-    , y       = "val"
-    , color   = "group"
-    , palette = c("#00AFBB", "#E7B800")
-    , add     = "jitter"
-    , shape   = "group"
-  )
-g1 %>% print()
-
-# histogram
-g2 <- t1 %>% 
-  ggpubr::gghistogram(
-    x = "val"
-    ,color = "group"
-    ,fill  = "group"
-    ,add = "mean"
-    ,rug = TRUE
-    ,palette = c("#00AFBB", "#E7B800")
-    ,alpha = .2
-  )
-g2
-
-# density
-g3 <- t1 %>% 
-  ggpubr::ggdensity(
-    x = "val"
-    ,color = "group"
-    ,fill  = "group"
-    ,add = "mean"
-    ,rug = TRUE
-    ,palette = c("#00AFBB", "#E7B800")
-  )
-g3
-
-# but it's better to think in terms of facets
-t2 <- ds %>% 
-  dplyr::filter(graphNum %in% c(12, 24, 40 ))
-g4 <-  t2 %>% 
-  ggpubr::ggdensity(
-    x = "val"
-    ,color = "group"
-    ,fill  = "group"
-    ,add = "mean"
-    ,rug = TRUE
-    ,palette = c("#00AFBB", "#E7B800")
-  )+
-  facet_grid(.~graphNum)
-g4
-
-# or spreads
-g5 <-  ds %>% 
-  ggpubr::ggdensity(
-    x = "val"
-    ,color = "group"
-    ,fill  = "group"
-    ,add = "mean"
-    ,rug = TRUE
-    ,palette = c("#00AFBB", "#E7B800")
-  )+
-  facet_wrap(~graphNum)
-g5
-
-# ---- sample-of-graphs-1 --------------------
-
-# conditions <- c(2, 12, 22, 32)
-conditions <- c(5, 15, 25, 35)
-d1 <- ds %>% 
-  dplyr::filter(graphNum %in% conditions) 
-
-# density
-g6 <-  d1 %>% 
-  dplyr::filter(graphNum %in% conditions) %>% 
-  ggpubr::ggdensity(
-    x = "val"
-    ,color = "group"
-    ,fill  = "group"
-    ,add = "mean"
-    ,rug = TRUE
-    ,palette = c("#00AFBB", "#E7B800")
-  )+
-  facet_wrap(~graphNum)
-g6
-
-# boxplot
-g7 <- d1 %>% 
-  ggpubr::ggboxplot(
-    x         = "group"
-    , y       = "val"
-    , color   = "group"
-    , palette = c("#00AFBB", "#E7B800")
-    , add     = "jitter"
-    , shape   = "group"
-  )+
-  facet_wrap(~graphNum)
-g7 %>% print()
-
-# histogram
-g8 <- d1 %>% 
-ggpubr::gghistogram(
-  x = "val"
-  ,color = "group"
-  ,fill  = "group"
-  ,add = "mean"
-  ,rug = TRUE
-  ,palette = c("#00AFBB", "#E7B800")
-  ,alpha = .2
-)+
-  facet_wrap(~graphNum)
-g8
-
-ds_pars %>% filter(graphNum %in% c(1,11,21,31))
-
-
 
   
 # ---- define-utility-functions ---------------
