@@ -17,3 +17,8 @@ Repository to investigate the effect of banning individuals with felony convicti
 [snapping_back]:https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2845435
 
 
+## Analytic products
+
+- [`./analysis/0-greeter/0-greeter.html` at 2019-04-16][0-greeter-2019-04-16] - documents data import and initial explorations.
+
+[0-greeter-2019-04-16]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/0b1add7255e8fe0066760f52ef0d127fc588f506/analysis/0-greeter/0-greeter.html
