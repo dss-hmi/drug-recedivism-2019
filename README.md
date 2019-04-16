@@ -21,4 +21,4 @@ Repository to investigate the effect of banning individuals with felony convicti
 
 - [`./analysis/0-greeter/0-greeter.html` at 2019-04-16][0-greeter-2019-04-16] - documents data import and initial explorations.
 
-[0-greeter-2019-04-16]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/0b1add7255e8fe0066760f52ef0d127fc588f506/analysis/0-greeter/0-greeter.html
+[0-greeter-2019-04-16]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/2c5f0991bb3d9afd7e26877292e3ccc416215c46/analysis/0-greeter/0-greeter.html
