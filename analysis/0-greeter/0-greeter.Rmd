@@ -2,8 +2,10 @@
 title: "Import and basic view"
 output:
   html_document:
+    css: ~/GitHub/dss-hmi/drug-recedivism-2019/libs/css/sidebar.css
     keep_md: yes
     toc: yes
+  always_allow_html: yes
 ---
 
 <!-- These two chunks should be added in the beginning of every .Rmd that you want to source an .R script -->
@@ -21,14 +23,15 @@ output:
 <!-- Set the report-wide options, and point to the external code file. -->
 ```{r set_options, echo=F}
 # set options shared by all chunks
+report_render_start_time <- Sys.time()
 opts_chunk$set(
   results='show', 
   message = TRUE,
   comment = NA, 
   tidy = FALSE,
-  fig.height = 4, 
-  fig.width = 5.5, 
-  out.width = "550px",
+  fig.height = 7, 
+  fig.width = 12, 
+  out.width = "900px",
   fig.path = 'figure_rmd/',     
   dev = "png",
   dpi = 400
@@ -36,13 +39,14 @@ opts_chunk$set(
   # dev = "pdf"#,
   # dev.args=list(pdf = list(colormodel = 'cmyk'))
 )
-echoChunks <- FALSE
+echoChunks <- TRUE
 options(width=120) #So the output is 50% wider than the default.
 # connect to the file with the underlying R script  
 read_chunk("./manipulation/0-greeter.R") 
 ```
 
 
+# I. Exposition 
 
 <!-- Load 'sourced' R files.  Suppress the output when loading packages. --> 
 ```{r load-packages, echo=echoChunks, message=FALSE}
@@ -63,6 +67,7 @@ read_chunk("./manipulation/0-greeter.R")
 #Put code in here.  It doesn't call a chunk in the codebehind file.
 ```
 
+## I.A. Data
 <!-- Load the datasets.   -->
 ```{r load-data, echo=echoChunks, results='show', message=FALSE}
 ```
@@ -85,8 +90,43 @@ read_chunk("./manipulation/0-greeter.R")
 ```{r basic-graph, echo=TRUE, results='show', message=FALSE}
 ```
 
-```{r sample-of-graphs-1, echo=TRUE, results='show', message=FALSE}
+# II. Development
+
+```{r initial-explorations-0, echo=TRUE, results='show', message=FALSE}
 ```
 
+```{r initial-explorations-1, echo=TRUE, results='show', message=FALSE}
+```
+
+```{r initial-explorations-2, echo=TRUE, results='show', message=FALSE}
+```
+
+```{r initial-explorations-3, echo=TRUE, results='show', message=FALSE}
+```
+
+# III. 
+
+
+Session Information {#session-info}
+===========================================================================
+
+For the sake of documentation and reproducibility, the current report was rendered in the following environment.  Click the line below to expand.
+
+<details>
+  <summary>Environment <span class="glyphicon glyphicon-plus-sign"></span></summary>
+```{r session-info, echo=FALSE}
+if( requireNamespace("devtools", quietly = TRUE) ) {
+  devtools::session_info()
+} else {
+  sessionInfo()
+}
+```
+</details>
+
+```{r session-duration, echo=FALSE}
+report_render_duration_in_seconds <- round(as.numeric(difftime(Sys.time(), report_render_start_time, units="secs")))
+```
+
+Report rendered by `r Sys.info()["user"]` at `r strftime(Sys.time(), "%Y-%m-%d, %H:%M %z")` in `r report_render_duration_in_seconds` seconds.
 
 
