@@ -1,14 +1,14 @@
 ---
-title: "Import and basic view"
+title: "EDA 1: Basic Questions"
 output:
   html_document:
     always_allow_html: yes
-    css: C:/Users/an499583/OneDrive/OneDrive - University of Central Florida/GitHub/dss-hmi/drug-recedivism-2019/libs/css/sidebar.css
     df_print: kable
     highlight: tango
     keep_md: yes
     theme: spacelab
     toc: yes
+    toc_float: yes
   pdf_document: 
     highlight: pygments
     toc: yes
@@ -48,14 +48,13 @@ opts_chunk$set(
 echoChunks <- TRUE
 options(width=120) #So the output is 50% wider than the default.
 # connect to the file with the underlying R script  
-read_chunk("./manipulation/0-greeter.R") 
+read_chunk("./analysis/eda-1/eda-1.R") 
 ```
 
 
 # I. Exposition 
 
-## Environment
-
+Some text here
 <!-- Load 'sourced' R files.  Suppress the output when loading packages. --> 
 ```{r load-packages, echo=echoChunks, message=FALSE}
 ```
@@ -75,31 +74,19 @@ read_chunk("./manipulation/0-greeter.R")
 #Put code in here.  It doesn't call a chunk in the codebehind file.
 ```
 
-## Data
+## I.A. Data
 <!-- Load the datasets.   -->
-```{r load-data, echo=echoChunks, results='show', message=FALSE, warning=FALSE}
+```{r load-data, echo=echoChunks, results='show', message=FALSE}
 ```
 
 <!-- Inspect the datasets.   -->
 ```{r inspect-data, echo=echoChunks, results='show', message=FALSE}
 ```
 
-## Grooming
 <!-- Tweak the datasets.   -->
 ```{r tweak-data, echo=echoChunks, results='show', message=FALSE}
 ```
 
-###   Sentence
-```{r tweak-1, echo=echoChunks, results='show', message=FALSE}
-```
-
-###   Codebook
-```{r tweak-2, echo=echoChunks, results='show', message=FALSE}
-```
-
-###   Inmate DB
-```{r tweak-3, echo=echoChunks, results='show', message=FALSE}
-```
 
 
 <!-- Basic table view.   -->
@@ -110,12 +97,28 @@ read_chunk("./manipulation/0-greeter.R")
 ```{r basic-graph, echo=TRUE, results='show', message=FALSE}
 ```
 
-## Storing
-
-Let us create a `data transfer object` (dto), a list object that would store all three data components in this project. This object (dto) will be the point of departure for all subsequent analytic efforst. 
-
 
 ```{r save-to-disk, echo=TRUE, results='show', message=FALSE}
+```
+
+
+# II. Development
+
+## 1
+```{r explore-1, echo=TRUE, results='show', message=FALSE}
+```
+
+## 2
+
+```{r explore-2, echo=TRUE, results='show', message=FALSE}
+```
+
+## 3
+```{r explore-3, echo=TRUE, results='show', message=FALSE}
+```
+
+## 4
+```{r explore-4, echo=TRUE, results='show', message=FALSE}
 ```
 
 
