@@ -9,65 +9,95 @@ rm(list=ls(all=TRUE)) #Clear the memory of variables from previous run.
 cat("\f") # clear console when working in RStudio
 
 # ---- load-sources ------------------------------------------------------------
-# Call `base::source()` on any repo file that defines functions needed below. 
+# import custom functions and scripts
 base::source("./scripts/common-functions.R")
 # ---- load-packages -----------------------------------------------------------
 # Attach these packages so their functions don't need to be qualified
-library(magrittr) # pipes
-library(dplyr)    # disable when temp lines are removed
-library(ggplot2)  # graphs
-library(ggpubr)   # documents
+library(magrittr)          # pipes
+library(ggplot2)           # graphing
+# for other packages, please use qualifiers (e.g. dplyr::select() )
+requireNamespace("dplyr")    # data wrangling
+requireNamespace("ggpubr")   # documents
   
 # ---- declare-globals ---------------------------------------------------------
+# path to the data source
 path_file_input_dto <- "./data-unshared/derived/0-dto.rds"
 
 # ---- load-data ---------------------------------------------------------------
-dto      <- readRDS(path_file_input_dto)
+dto <- readRDS(path_file_input_dto)
 dto %>% pryr::object_size(); dto %>% class(); dto %>% names()
 
 # assign aliases for this report
 ds          <- dto$sentence
 ds_codebook <- dto$codebook
 
+# ----- custom-functions --------------------------------------
+get_a_sample <- function(
+  d,
+  varname            # unique of these
+  ,sample_size
+  ,show_all = FALSE
+){
+  # varname = "offense_arrest_cd"
+  sample_pool <- ds %>% 
+    dplyr::distinct_(.dots = varname) %>% na.omit() %>% 
+    as.list() %>% unlist() %>% as.vector() 
+  if(show_all){ sample_size = length(sample_pool)}
+  selected_sample <- sample_pool %>% sample(size = sample_size, replace = FALSE )
+  
+  return(selected_sample)
+}  
+# How to use
+# ds %>% get_a_sample("person_id",  5)
+# ds %>% get_a_sample("offense_arrest_cd",  5, show_all = T) 
+# set.seed(42)
+# target_sample <- ds %>% 
+#   dplyr::filter(n_offenses > 1L) %>% 
+#   get_a_sample("person_id", 500)
+
 # ---- tweak-data ---------------------------------------------------------------
 # adjust column names
-
-ds[ds == "1800-01-01"] <- NA # '1800-01-01' indicates conversion error
-
 ds <- ds %>% 
-  dplyr::mutate(
-    conviction_id       = paste0(person_id,"-",offense_arrest_cd)  # to discern multiple convictions on the same date
-    ,year               = lubridate::year(begin_date)
-    ,month              = lubridate::month(begin_date)
-    ,offense_group      = substr(offense_arrest_cd,1,1)
-    ,offense_begin_date = lubridate::as_date(as.integer(offense_begin_date), origin = "1900-01-01" )
-    ,begin_date         = lubridate::as_date(begin_date)
-  ) %>% 
-  dplyr::select_(.dots = c(
+  dplyr::select(c(
     "person_id"          # idnumbercomb, manually checked to represent a unique person 
-    ,"offense_begin_date"# date the person began serving the sentence for an individual offense
     ,"begin_date"        # date the person began serving the aggregate sentence
+    # ,"offense_begin_date"# date the person began serving the sentence for an individual offense
     ,"offense_count"     # count of offenses in inmate's sentence
     ,"offense_arrest_cd" # code for the offense committed   
     ,"offense_arrest"    # standardized description of the offense committed
-    ,"offense_jail_time_days" # number of days jail credit awarded for a specific offense
     # the rest were computed
     ,"conviction_id"     # person_id + offense_arrest_cd
     ,"year"              # calendar year in which offense tool place
     ,"offense_group"     # one-letter code (we need "C" - drug-related fellonies)
-  )
-  )
+  ))
+ds %>% dplyr::glimpse(50)
 
-ds %>% glimpse(50)
+ds <- ds %>% 
+  # tweak existing
+  dplyr::mutate(
+    begin_date         = lubridate::as_date(begin_date)
+    # ,offense_begin_date  = lubridate::as_date(as.integer(offense_begin_date), origin = "1900-01-01" )
+  ) %>% 
+  # create new
+  dplyr::mutate(
+    # to discern multiple convictions on the same date, compute conviction_id
+    conviction_id       = paste0(person_id,"-",offense_arrest_cd)  
+    # add auxillary variable for grouping and printing
+    ,year               = lubridate::year(begin_date)
+    ,month              = lubridate::month(begin_date)
+    ,offense_group      = substr(offense_arrest_cd,1,1)
+  ) 
 
+# view the contents of the codebook for these variables
 ds_codebook %>% 
-  dplyr::filter(field_name %in% c("begin_date"
-                                  ,"offense_begin_date" # a lot of missing values
-                                  ,"offense_arrest_cd"
-                                  ,"offense_arrest"
+  dplyr::filter(field_name %in% c(
+    "begin_date"
+    # ,"offense_begin_date" # a lot of missing values
+    ,"offense_arrest_cd"
+    ,"offense_arrest"
   )) %>% 
-  # neat(output_format = "pandoc")
-  knitr::kable(format = "pandoc")
+  neat()
+  # knitr::kable(format = "pandoc")
 
 # ---- explore-1 ------------------------------------------------
 
@@ -79,7 +109,7 @@ ds <- ds %>%
     ,n_offenses   = n()                        # offenses, counts of
   ) %>% 
   dplyr::ungroup()
-ds %>% glimpse(50)
+ds %>% dplyr::glimpse(50)
 
 
 
@@ -93,7 +123,7 @@ t2 <- ds %>%
 
 t2 %>% 
   ggplot2::ggplot(aes(x = n_convictions, y = n_people))+
-  geom_bar(stat = "identity")+
+  geom_bar(stat = "identity", fill = 'salmon', alha = .5, color = "black")+
   theme_minimal()
 # obsevation: most people are first time offenders
 
@@ -108,7 +138,7 @@ ds %>%
   ) %>% 
   dplyr::ungroup() %>% 
   ggplot2::ggplot(aes(x = n_offenses, y = n_people))+
-  geom_bar(stat = "identity")+
+  geom_bar(stat = "identity",fill = 'aquamarine3', alpha = .5, color = "black")+
   theme_minimal()
 
 # ---- explore-3 ------------------------------------------------
@@ -120,21 +150,24 @@ t3 <- ds %>%
   dplyr::filter(n_convictions == 1) %>% 
   dplyr::group_by(offense_group) %>% 
   dplyr::summarize(
-    n_people = length(unique(person_id)) # people will be double counted because a single conviction may contain multiple offenses from various offense groups
+    # WARNING: people will be double counted because 
+    # a single conviction may contain multiple offenses from various offense groups
+    n_people = length(unique(person_id)) # ! WARNING 
     ,n_offenses = n()
   ) %>% 
   dplyr::ungroup()
 
 
 t3 %>% 
-  ggplot2::ggplot(aes(x = offense_group  )) +
-  geom_bar(aes(y = n_people), stat = "identity", alpha = .4)+
-  geom_bar(aes(y = n_offenses), stat = "identity", alpha = .3)+
+  ggplot2::ggplot(aes(x = offense_group  ) ) +
+  geom_bar(aes(y = n_offenses),fill = "yellow",color = "black", stat = "identity", alpha = .3)+
+  geom_bar(aes(y = n_people),  fill = "blue", stat = "identity", alpha = .6)+
   theme_minimal()
 
 # ---- explore-4 ------------------------------------------------
 
-# Q.  For every offense group, how many individuals had at least one conviction with at one offence in this offense group
+# Q.  For every offense group, 
+# how many individuals had at least one conviction with at leasT one offence in this offense group
 t4 <- ds %>% 
   dplyr::group_by(offense_group, year) %>% 
   dplyr::summarize(
@@ -148,27 +181,28 @@ t4 %>%
   geom_point()+
   geom_line(aes(group = offense_group))+
   geom_vline(xintercept = 1996)+
-  theme_minimal()
+  theme_minimal() +
+  labs(title = "Number of people with at least one conviction")
 
 
 # ----- compute-recedivism ---------------------------
-get_a_sample <- function(d,varname,sample_size, show_all = FALSE){
-  # varname = "offense_arrest_cd"
-  
-  sample_pool <- ds %>% 
-    dplyr::distinct_(.dots = varname) %>% na.omit() %>% 
-    as.list() %>% unlist() %>% as.vector() 
-  if(show_all){ sample_size = length(sample_pool)}
-  selected_sample <- sample_pool %>% sample(size = sample_size, replace = FALSE )
-  
-  return(selected_sample)
-}  
-  # ds %>% get_a_sample("person_id",  5)
-  # ds %>% get_a_sample("offense_arrest_cd",  5, show_all = T) 
-set.seed(42)
-target_sample <- ds %>% 
-  dplyr::filter(n_offenses > 1L) %>% 
-  get_a_sample("person_id", 500)
+# get_a_sample <- function(d,varname,sample_size, show_all = FALSE){
+#   # varname = "offense_arrest_cd"
+#   
+#   sample_pool <- ds %>% 
+#     dplyr::distinct_(.dots = varname) %>% na.omit() %>% 
+#     as.list() %>% unlist() %>% as.vector() 
+#   if(show_all){ sample_size = length(sample_pool)}
+#   selected_sample <- sample_pool %>% sample(size = sample_size, replace = FALSE )
+#   
+#   return(selected_sample)
+# }  
+#   # ds %>% get_a_sample("person_id",  5)
+#   # ds %>% get_a_sample("offense_arrest_cd",  5, show_all = T) 
+# set.seed(42)
+# target_sample <- ds %>% 
+#   dplyr::filter(n_offenses > 1L) %>% 
+#   get_a_sample("person_id", 500)
 
 
 ds %>% 
@@ -186,7 +220,7 @@ ds1 <- ds %>%
 
 
 
-ds1 %>% glimpse(80)
+ds1 %>% dplyr::glimpse(80)
 # a sample of recidivists to work with
 sample1 <- sample(ds1$person_id, 10)
 
@@ -199,80 +233,6 @@ ds2 <- ds %>%
 
 # ---- save-to-disk ----------------------------
 
-# ---- initial-explorations-0 ------------------------
-# focus on a few variables
-d1 <- ds %>%
-  dplyr::mutate(
-    conviction_id  = paste0(person_id,"-",offense_arrest_cd)
-    ,year          = lubridate::year(begin_date)
-    ,offense_group = substr(offense_arrest_cd,1,1)
-    # ,offense_group = gsub("^(\\w{1})(\\d{2}))$","\\1", offense_arrest_cd)
-  ) %>% 
-  dplyr::select_(.dots = c(
-    "person_id"
-    ,"begin_date"
-    ,"offense_arrest_cd"
-    ,"offense_arrest"
-    ,"conviction_id"
-    ,"year"
-    ,"offense_group"
-  )
-  )
-d1 %>% glimpse(100)
-
-
-d2 <- d1 %>% 
-  dplyr::mutate(
-    conviction_id = paste0(person_id,"-",offense_arrest_cd)
-    ,year         = lubridate::year(begin_date)
-    # ,offense_group = gsub("^(\\w{1})(\\d{2}))$","\\1", offense_arrest_cd)
-    ,offense_group = substr(offense_arrest_cd,1,1)
-  )
-
-d2 %>% glimpse(100)
-
-d2 %>% group_by(offense_group) %>% count() %>% neat() # rows
-d2 %>% group_by(offense_group) %>% summarize(n=length(unique(person_id))) %>% neat() # persons
-
-
-# ---- initial-explorations-1 ------------------------
-
-# type of offense total
-d2 %>% 
-  dplyr::filter(year > 1974) %>% 
-  dplyr::group_by(offense_group) %>% 
-  dplyr::count() %>% 
-  ggplot2::ggplot(aes(x = offense_group, y = n ))+
-  geom_bar(stat = "identity")+
-  coord_flip()+
-  theme_minimal()
-
-# type of offsen by year
-d2 %>% 
-  dplyr::filter(year > 1974) %>% 
-  dplyr::group_by(offense_group, year) %>% 
-  dplyr::count() %>% 
-  ggplot2::ggplot(aes(x = year, y = offense_group, fill = n ))+
-  # geom_raster()+
-  geom_tile(color = "grey80")+
-  scale_fill_gradient2( high = "red")+
-  theme_minimal()
-
-# ---- initial-explorations-2 ------------------------
-
-# type of drug offense by year
-d2 %>% 
-  dplyr::filter(year > 1974) %>% 
-  dplyr::filter(offense_group == "C") %>% 
-  dplyr::group_by(offense_arrest, year) %>% 
-  dplyr::count() %>% 
-  ggplot2::ggplot(aes(x = year, y = offense_arrest, fill = n ))+
-  geom_tile(color = "grey80")+
-  scale_fill_gradient2( high = "blue")+
-  # scale_fill_gradient2( high = "red")+
-  theme_minimal()
-
-# see our research jounal https://docs.google.com/document/d/1_EhkXgkBZTJ8nc02rr8Z4wrbzSbvvT6VZoQJi6DAhNQ/edit?usp=sharing
 
 # ---- publish ---------------------------------
 rmarkdown::render(
