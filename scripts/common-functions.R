@@ -38,7 +38,7 @@ neat <- function(x, output_format = "html"){
 # ds %>% distinct(id) %>% count() %>% neat(10)
 
 # adds a formated datatable
-neat_DT <- function(x, filter_="top"){
+neat_DT <- function(x, filter_="top",...){
   
   xt <- x %>%
     as.data.frame() %>% 
@@ -49,6 +49,8 @@ neat_DT <- function(x, filter_="top"){
         pageLength = 6,
         autoWidth  = FALSE
       )
+      ,style = "bootstrap"
+      ,...
     )
   return(xt)
 }
