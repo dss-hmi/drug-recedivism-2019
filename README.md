@@ -10,6 +10,10 @@ Repository to investigate the effect of banning individuals with felony convicti
 
 [inmageDB]:https://dcs-inmatesearch.ne.gov/Corrections/COR_input.html 
 
+Dataset was provided by the research administrator at the Nebraska Department of Correctional Services Dr. Abby Carbaugh (https://corrections.nebraska.gov/about/staff/abby-carbaugh-phd)
+
+The data was provided on March 25, 2016. All data requests should be sent to the research administrator. 
+
 ## Resources
 
 - Tuttle, C. Snapping Back: Food Stamp Bans and Criminal Recidivism. American Economic Journal: Economic Policy. [full text][snapping_back]
