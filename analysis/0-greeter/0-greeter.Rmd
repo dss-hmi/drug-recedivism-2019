@@ -1,9 +1,9 @@
 ---
-title: "Import and basic view"
+title: "0-greeter"
 output:
   html_document:
     always_allow_html: yes
-    css: C:/Users/an499583/OneDrive/OneDrive - University of Central Florida/GitHub/dss-hmi/drug-recedivism-2019/libs/css/sidebar.css
+    css: ../../libs/css/sidebar.css
     df_print: kable
     highlight: tango
     keep_md: yes
@@ -46,18 +46,20 @@ opts_chunk$set(
   # dev.args=list(pdf = list(colormodel = 'cmyk'))
 )
 echoChunks <- TRUE
+warningChunk <- FALSE
 options(width=120) #So the output is 50% wider than the default.
 # connect to the file with the underlying R script  
 read_chunk("./manipulation/0-greeter.R") 
 ```
 
+This document is the annotation layer to [`./manipulation/0-greeter.R`][path_greeter] script, which connects to data sources used in the study, imports them into RStudio environment and prepares them for analytic enquiry.
 
-# I. Exposition 
+[path_greeter]:https://github.com/dss-hmi/drug-recedivism-2019/blob/master/manipulation/0-greeter.R
 
-## Environment
+# I. Environment
 
 <!-- Load 'sourced' R files.  Suppress the output when loading packages. --> 
-```{r load-packages, echo=echoChunks, message=FALSE}
+```{r load-packages, echo=echoChunks, message=FALSE, warning = warningChunk}
 ```
 
 
@@ -72,10 +74,9 @@ read_chunk("./manipulation/0-greeter.R")
 
 <!-- Declare any global functions specific to a Rmd output.  Suppress the output. --> 
 ```{r, echo=echoChunks, message=FALSE}
-#Put code in here.  It doesn't call a chunk in the codebehind file.
 ```
 
-## Data
+# II. Data
 <!-- Load the datasets.   -->
 ```{r load-data, echo=echoChunks, results='show', message=FALSE, warning=FALSE}
 ```
@@ -84,20 +85,20 @@ read_chunk("./manipulation/0-greeter.R")
 ```{r inspect-data, echo=echoChunks, results='show', message=FALSE}
 ```
 
-## Grooming
+# III. Grooming
 <!-- Tweak the datasets.   -->
 ```{r tweak-data, echo=echoChunks, results='show', message=FALSE}
 ```
 
-###   Sentence
+## Sentences
 ```{r tweak-1, echo=echoChunks, results='show', message=FALSE}
 ```
 
-###   Codebook
+## Codebook
 ```{r tweak-2, echo=echoChunks, results='show', message=FALSE}
 ```
 
-###   Inmate DB
+## Inmate DB
 ```{r tweak-3, echo=echoChunks, results='show', message=FALSE}
 ```
 
@@ -110,7 +111,9 @@ read_chunk("./manipulation/0-greeter.R")
 ```{r basic-graph, echo=TRUE, results='show', message=FALSE}
 ```
 
-## Storing
+
+
+# IV. Store
 
 Let us create a `data transfer object` (dto), a list object that would store all three data components in this project. This object (dto) will be the point of departure for all subsequent analytic efforst. 
 

@@ -9,76 +9,84 @@ rm(list=ls(all=TRUE)) #Clear the memory of variables from previous run.
 cat("\f") # clear console when working in RStudio
 
 # ---- load-sources ------------------------------------------------------------
-# Call `base::source()` on any repo file that defines functions needed below.  
-base::source("./scripts/common-functions.R")
+# import custom functions and scripts
+base::source("./scripts/common-functions.R") # generic toolkit
 # ---- load-packages -----------------------------------------------------------
 # Attach these packages so their functions don't need to be qualified
-# see http://r-pkgs.had.co.nz/namespace.html#search-path
-library(magrittr) #Pipes
-library(dplyr) # disable when temp lines are removed
-library(ggplot2)
-library(ggpubr)
-library(readxl)
+library(magrittr)          # pipes
+library(ggplot2)           # graphing
+
+# other packages used in the script
+requireNamespace("dplyr")    # data wrangling
+requireNamespace("readxl")   # import from Excel
 # ---- declare-globals ---------------------------------------------------------
-# path_file_input_data       <- "./data-unshared/raw/2017-10-04  AllSentences_updated_small.xlsx"
-# path_file_input_inmateDB   <- "./data-unshared/raw/inmateDB_small.xlsx"
-path_file_input_data       <- "./data-unshared/raw/2017-10-04  AllSentences_updated.xlsx"
+# paths to the data sources
+# path_file_input_sentences  <- "./data-unshared/raw/2017-10-04  AllSentences_updated_small.xlsx" # for testing
+# path_file_input_inmateDB   <- "./data-unshared/raw/inmateDB_small.xlsx"                         # for testing
+path_file_input_sentences       <- "./data-unshared/raw/2017-10-04  AllSentences_updated.xlsx"
 path_file_input_inmateDB   <- "./data-unshared/raw/inmateDB.xlsx"
 # ---- load-data ---------------------------------------------------------------
-# source 1 : Data from Nebraska dept of Corrections
-ds_sentence <- readxl::read_excel(path_file_input_data,sheet = "AllSentences" )
-ds_meta     <- readxl::read_excel(path_file_input_data,sheet = "Codebook",n_max = 50) 
+# source 1 : Data from Nebraska Dept of Corrections
+ds_sentence <- readxl::read_excel(path_file_input_sentences, sheet = "AllSentences")
+ds_codebook     <- readxl::read_excel(path_file_input_sentences, sheet = "Codebook", n_max = 50) 
 
 # source 2 : Public Inmate database 
 ds_inmate   <- readxl::read_excel(path_file_input_inmateDB) 
 
-# ---- tweak-data ---------------------------------------------------------------
+# ---- inspect-data ---------------------------------------------------------------
+# what are the basic specs (size, nrow, ncol) of these objects?
 ds_sentence %>% pryr::object_size(); ds_sentence %>% dim()
-ds_meta     %>% pryr::object_size(); ds_meta%>% dim()
+ds_codebook     %>% pryr::object_size(); ds_codebook%>% dim()
 ds_inmate   %>% pryr::object_size(); ds_inmate%>% dim()
 
 # ---- tweak-1 -----------------------------------------------------
-# Adjust SENTENCES
+# Tweak SENTENCES
 ds_sentence %>% dplyr::glimpse(100)
+# remove illegal characters in variable names
 colnames(ds_sentence) <- gsub(" " ,"_",colnames(ds_sentence)) %>% tolower()
 colnames(ds_sentence) <- gsub("__","_",colnames(ds_sentence)) # remove doubles
 
 ds_sentence <- ds_sentence %>% 
   # create inambiguous label for unique individual identifier
   dplyr::rename_(
-    "person_id" = "idnumbercomb" # manually checked for doublicates
+    "person_id" = "idnumbercomb" # manually checked for douplicates
   ) %>% 
   dplyr::mutate(
     conviction_id  = paste0(person_id,"-",offense_arrest_cd) # to discern multiple convictions on the same date
-    ,year          = lubridate::year(begin_date) # 
-    ,month         = lubridate::month(begin_date) # 
-    ,offense_group = substr(offense_arrest_cd, 1, 1)
+    ,year          = lubridate::year(begin_date)     # for aggregation and graphing
+    ,month         = lubridate::month(begin_date)    # for aggregation and graphing 
+    ,offense_group = substr(offense_arrest_cd, 1, 1) # for aggregation and graphing
   )
 ds_sentence %>% dplyr::glimpse(100)
 
 
 # ---- tweak-2 -----------------------------------------------------
-# Adjust CODEBOOK for sentences
-ds_meta %>% glimpse(80)
-colnames(ds_meta) <- gsub(" " ,"_",colnames(ds_meta)) %>% tolower()
-colnames(ds_meta) <- gsub("__","_",colnames(ds_meta)) # remove doubles
-ds_meta <- ds_meta %>% 
+# Tweak CODEBOOK for sentences
+ds_codebook %>% glimpse(80)
+# remove illegal characters in variable names
+colnames(ds_codebook) <- gsub(" " ,"_",colnames(ds_codebook)) %>% tolower()
+colnames(ds_codebook) <- gsub("__","_",colnames(ds_codebook)) # remove doubles
+ds_codebook <- ds_codebook %>% 
   dplyr::mutate(
     field_name  = tolower( gsub(" " ,"_",field_name) ) # to be consistent with `ds_sentence`
     ,field_name =          gsub("__","_",field_name)   # to be consistent with `ds_sentence`
   ) 
-ds_meta %>% glimpse(80)
+ds_codebook %>% glimpse(80)
+
+ds_codebook %>% neat()
 
 # ---- tweak-3 -----------------------------------------------------
-# Adjust INMATE DATABASE 
+# Tweak INMATE DATABASE 
 ds_inmate %>% glimpse(80)
-colnames(ds_inmate) <- gsub(" " ,"_",colnames(ds_inmate)) %>% tolower() # remove spaces between words
-colnames(ds_inmate) <- gsub("__","_",colnames(ds_inmate))               # remove doubles
+# remove illegal characters in variable names
+colnames(ds_inmate) <- gsub(" " ,"_",colnames(ds_inmate)) %>% tolower()      # remove spaces between words
+colnames(ds_inmate) <- gsub("__","_",colnames(ds_inmate))                    # remove doubles
 
-colnames(ds_inmate) <- gsub("['(']\\month&year[')']","",colnames(ds_inmate))            # remove special characters
-colnames(ds_inmate) <- gsub("/","_",colnames(ds_inmate))          # remove special characters
-colnames(ds_inmate) <- gsub("..\\d{1}$","",colnames(ds_inmate))         # remove debree from auto-rename
-# colnames(ds_inmate) <- gsub(" $","",colnames(ds_inmate))                # remove trailing space
+colnames(ds_inmate) <- gsub("['(']\\month&year[')']","",colnames(ds_inmate)) # remove special characters
+colnames(ds_inmate) <- gsub("/","_",colnames(ds_inmate))                     # remove special characters
+colnames(ds_inmate) <- gsub("...\\d{1}$","",colnames(ds_inmate))              # remove debree from auto-rename
+
+# colnames(ds_inmate) <- gsub(" $","",colnames(ds_inmate))                   # remove trailing space
 ds_inmate %>% glimpse(80)
 
 # ---- basic-graph -------------------------------------------------------
@@ -86,16 +94,99 @@ ds_inmate %>% glimpse(80)
 
 # ---- define-utility-functions ---------------
 
+# ---- basic-pivot-prep ----------------------------
+
+a <- ds_sentence %>% 
+  dplyr::group_by(person_id) %>% # for each person
+  dplyr::summarize(
+    n_convictions = length(unique(conviction_id)) # count how many convictions s/he has
+  ) %>% 
+  dplyr::ungroup() 
+
+b <- a %>% 
+  dplyr::group_by(n_convictions) %>% # for each number of convictions
+  dplyr::summarize(
+    n_people = length(unique(person_id)) # count how many people had this many convictions
+  )
+
+sample_from_n_conviction <- function(
+  d
+  ,sample_size
+  ,n_conv
+){
+  
+  a <- d %>% 
+    dplyr::group_by(person_id) %>% # for each person
+    dplyr::summarize(
+      n_convictions = length(unique(conviction_id)) # count how many convictions s/he has
+    ) %>% 
+    dplyr::ungroup() 
+  
+  b <- a %>% 
+    dplyr::group_by(n_convictions) %>% # for each number of convictions
+    dplyr::summarize(
+      n_people = length(unique(person_id)) # count how many people had this many convictions
+    )
+  
+  persons_with_n_convictions <- a %>% 
+    filter(n_convictions == n_conv) %>% 
+    dplyr::distinct(person_id) %>% na.omit() %>% 
+    as.list() %>% unlist() %>% as.vector() 
+  
+  sample_of_persons_with_n_convictions <- persons_with_n_convictions %>% 
+    sample(size = sample_size, replace = FALSE )
+}
+
+set.seed(42)
+sample_id_2 <- ds_sentence %>% sample_from_n_conviction(sample_size = 6,n_conv = 2)
+sample_id_3 <- ds_sentence %>% sample_from_n_conviction(sample_size = 3,n_conv = 3)
+sample_id_4 <- ds_sentence %>% sample_from_n_conviction(sample_size = 4,n_conv = 4)
+sample_id_6 <- ds_sentence %>% sample_from_n_conviction(sample_size = 1,n_conv = 6)
+sample_id_7 <- ds_sentence %>% sample_from_n_conviction(sample_size = 1,n_conv = 6)
+
+ds_sentence_sample <- ds_sentence %>% 
+  dplyr::filter(person_id %in% c(
+     sample_id_2
+    ,sample_id_3
+    ,sample_id_4
+    ,sample_id_6
+    ,sample_id_7
+  ))
+
+get_a_sample <- function(
+  d,
+  varname            # unique of these
+  ,sample_size
+  ,show_all = FALSE
+){
+  # varname = "offense_arrest_cd"
+  sample_pool <- d %>% 
+    dplyr::distinct_(.dots = varname) %>% na.omit() %>% 
+    as.list() %>% unlist() %>% as.vector() 
+  if(show_all){ sample_size = length(sample_pool)}
+  selected_sample <- sample_pool %>% sample(size = sample_size, replace = FALSE )
+  
+  return(selected_sample)
+}  
+
+ds_inmate_sample <- ds_inmate %>% get_a_sample("id_number", sample_size = 20)
+# ---- basic-pivot-print ----------------------------
+
+# print the pivots
+ds_sentence_sample %>% neat_DT(caption = "Sample records from `Sentences` data set")
+ds_codebook %>% neat_DT(caption = "Codebook for `Sentences` data set" )
+ds_inmate_sample %>% neat_DT(caption = "Sample records from `Inmate` data set")
+
 # ---- save-to-disk ----------------------------
 dto <- list(
   "sentence"  = ds_sentence # each row is a conviction, multiple rows per person
-  ,"codebook" = ds_meta     # each row is a variable in `ds_sentence`
+  ,"codebook" = ds_codebook     # each row is a variable in `ds_sentence`
   ,"inmate"   = ds_inmate   # 
 )
 
 dto %>% pryr::object_size()
-dto %>% saveRDS("./data-unshared/derived/0-dto.rds")
-ds_meta %>% readr::write_csv("./data-public/derived/all-sentences-codebook.csv") # for read-only inspection
+dto %>% saveRDS("./data-unshared/derived/0-dto.rds") # for piping further
+ds_codebook %>% readr::write_csv("./data-public/derived/all-sentences-codebook.csv") # for read-only inspection
 
 # ---- initial-explorations-0 ------------------------
 # focus on a few variables
