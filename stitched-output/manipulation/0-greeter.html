@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title></title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This report was automatically generated with the R package <strong>knitr</strong>
+(version 1.21).</p>
+
+<pre><code class="r"># Lines before the first chunk are invisible to Rmd/Rnw callers
+# Run to stitch a tech report of this script (used only in RStudio)
+# knitr::stitch_rmd(script = &quot;./manipulation/0-greeter.R&quot;, output = &quot;./stitched-output/manipulation/0-greeter.md&quot;)
+# knitr::stitch_rmd(script = &quot;./manipulation/0-greeter.R&quot;, output = &quot;./manipulation/stitched-output/0-greeter.md&quot;, )
+# this command is typically executed by the ./manipulation/governor.R
+
+rm(list=ls(all=TRUE)) #Clear the memory of variables from previous run. 
+# This is not called by knitr, because it&#39;s above the first chunk.
+cat(&quot;\f&quot;) # clear console when working in RStudio
+</code></pre>
+
+
+<pre><code class="r"># Call `base::source()` on any repo file that defines functions needed below.  Ideally, no real operations are performed.
+base::source(&quot;./scripts/common-functions.R&quot;)
+</code></pre>
+
+<pre><code class="r"># Attach these packages so their functions don&#39;t need to be qualified: http://r-pkgs.had.co.nz/namespace.html#search-path
+library(magrittr) #Pipes
+library(dplyr) # disable when temp lines are removed
+</code></pre>
+
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;
+</code></pre>
+
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag
+</code></pre>
+
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union
+</code></pre>
+
+<pre><code class="r">library(ggplot2)
+library(ggpubr)
+</code></pre>
+
+<pre><code>## Warning: package &#39;ggpubr&#39; was built under R version 3.5.3
+</code></pre>
+
+<pre><code class="r">library(readxl)
+</code></pre>
+
+<pre><code class="r"># path_file_input_data       &lt;- &quot;./data-unshared/raw/2016-03-25 - AllSentences_small.xlsx&quot;
+# path_file_input_data       &lt;- &quot;./data-unshared/raw/2017-10-04  AllSentences_updated_small.xlsx&quot;
+path_file_input_data       &lt;- &quot;./data-unshared/raw/2017-10-04  AllSentences_updated.xlsx&quot;
+path_file_input_inmateDB   &lt;- &quot;./data-unshared/raw/inmateDB.xlsx&quot;
+</code></pre>
+
+<pre><code class="r">ds      &lt;- readxl::read_excel(path_file_input_data,sheet = &quot;AllSentences&quot; )
+meta      &lt;- readxl::read_excel(path_file_input_data,sheet = &quot;Codebook&quot; ) 
+
+ds_inmateDB &lt;- readxl::read_excel(path_file_input_inmateDB) 
+</code></pre>
+
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
+## sheet, : Expecting logical in I22945 / R22945C9: got &#39;JR&#39;
+</code></pre>
+
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
+## sheet, : Expecting logical in I23772 / R23772C9: got &#39;JR&#39;
+</code></pre>
+
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
+## sheet, : Expecting logical in I23887 / R23887C9: got &#39;JR&#39;
+</code></pre>
+
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
+## sheet, : Expecting logical in I24299 / R24299C9: got &#39;JR&#39;
+</code></pre>
+
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
+## sheet, : Expecting logical in I25678 / R25678C9: got &#39;JR&#39;
+</code></pre>
+
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
+## sheet, : Expecting logical in I28913 / R28913C9: got &#39;JR&#39;
+</code></pre>
+
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
+## sheet, : Expecting logical in I32686 / R32686C9: got &#39;JR&#39;
+</code></pre>
+
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
+## sheet, : Expecting logical in I38773 / R38773C9: got &#39;JR&#39;
+</code></pre>
+
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
+## sheet, : Expecting logical in I44438 / R44438C9: got &#39;JR&#39;
+</code></pre>
+
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i =
+## sheet, : Expecting logical in I50572 / R50572C9: got &#39;SR&#39;
+</code></pre>
+
+<pre><code>## New names:
+## * `FIRST NAME` -&gt; `FIRST NAME..3`
+## * `MIDDLE NAME` -&gt; `MIDDLE NAME..4`
+## * `NAME EXTENSION` -&gt; `NAME EXTENSION..5`
+## * `FIRST NAME` -&gt; `FIRST NAME..7`
+## * `MIDDLE NAME` -&gt; `MIDDLE NAME..8`
+## * ... and 1 more
+</code></pre>
+
+<pre><code class="r">ds %&gt;% dplyr::glimpse(100)
+</code></pre>
+
+<pre><code>## Observations: 120,381
+## Variables: 47
+## $ `ID Number`               &lt;dbl&gt; 53731, 44473, 54131, 62706, 47816, 46628, 46628, 46628, 92913...
+## $ Idnumbercomb              &lt;dbl&gt; 44473, 44473, 54131, 62706, 47816, 46628, 46628, 46628, 92913...
+## $ `Previous ID`             &lt;dbl&gt; 44473, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 37142, 0, 0, 0, 0, 0, 0,...
+## $ `Inmate Name`             &lt;chr&gt; &quot;AARON                     BOBBY&quot;, &quot;AARON                    ...
+## $ `Parole Eligibility Date` &lt;dttm&gt; 2003-05-09, 1994-03-20, 2000-08-18, 2007-04-11, 1996-08-11, ...
+## $ `Tentative Release Date`  &lt;dttm&gt; 2006-02-10, 1994-07-20, 2001-02-15, 2008-04-11, 1997-09-26, ...
+## $ `Earn Dschrg Dt`          &lt;dttm&gt; NA, NA, NA, 2008-03-21, 1997-04-10, NA, NA, NA, NA, NA, 1988...
+## $ `Actual Dschrg Dt`        &lt;dttm&gt; NA, NA, NA, 2008-03-21, NA, NA, NA, NA, NA, NA, 1988-01-30, ...
+## $ `Good Time Law`           &lt;dbl&gt; 6, 4, 6, 6, 4, 4, 4, 4, 1, 1, 1, 4, 7, 6, 7, 7, 7, 6, 1, 6, 6...
+## $ `Docket Count`            &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+## $ County                    &lt;chr&gt; &quot;BUFFALO&quot;, &quot;LANCASTER&quot;, &quot;MADISON&quot;, &quot;DOUGLAS&quot;, &quot;DOUGLAS&quot;, &quot;DOU...
+## $ `County CD`               &lt;dbl&gt; 10, 55, 59, 28, 28, 28, 28, 28, 28, 28, 55, 55, 27, 72, 19, 4...
+## $ `Offense Begin Date`      &lt;chr&gt; &quot;36655&quot;, &quot;1800-01-01&quot;, &quot;36756&quot;, &quot;38581&quot;, &quot;1800-01-01&quot;, &quot;1800-...
+## $ `Offense Count`           &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 2, 3, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1...
+## $ `Offense Attmpt CD`       &lt;chr&gt; NA, &quot;A&quot;, NA, NA, NA, NA, NA, NA, NA, NA, &quot;A&quot;, NA, NA, NA, &quot;A&quot;...
+## $ `Offense Type CD`         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, &quot;A&quot;, NA, NA, NA, NA, NA, ...
+## $ `Offense Run CD`          &lt;chr&gt; &quot;CC&quot;, &quot;CC&quot;, &quot;CC&quot;, &quot;CC&quot;, &quot;CC&quot;, &quot;CC&quot;, &quot;CS&quot;, &quot;CS&quot;, &quot;CC&quot;, &quot;CC&quot;, &quot;...
+## $ `Offense Arrest CD`       &lt;chr&gt; &quot;C31&quot;, &quot;D21&quot;, &quot;B26&quot;, &quot;C31&quot;, &quot;D20&quot;, &quot;B12&quot;, &quot;K02&quot;, &quot;C31&quot;, &quot;E62&quot;...
+## $ `Offense Arrest`          &lt;chr&gt; &quot;MANU/DIST/DEL/DISP OR POSS W/I&quot;, &quot;THEFT&quot;, &quot;SEXUAL ASSAULT ON...
+## $ `Cnvct Desc`              &lt;chr&gt; &quot;POSSESSION CON SUB W/I DELIVER&quot;, NA, NA, &quot;POSSESSION W/I DEL...
+## $ `Felony Msdmnr CD`        &lt;chr&gt; &quot;3F&quot;, &quot;F&quot;, &quot;3AF&quot;, &quot;3F&quot;, &quot;4F&quot;, &quot;4F&quot;, &quot;3F&quot;, &quot;2F&quot;, NA, NA, &quot;4F&quot;,...
+## $ `Min Year`                &lt;dbl&gt; 4, 1, 0, 4, 1, 2, 4, 4, 1, 0, 1, 1, 1, 4, 1, 2, 5, 4, 1, 0, 1...
+## $ `Min Month`               &lt;dbl&gt; 0, 8, 0, 0, 6, 0, 0, 0, 4, 0, 0, 3, 8, 0, 6, 0, 0, 0, 8, 0, 0...
+## $ `Min Day`                 &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Max Year`                &lt;dbl&gt; 10, 2, 1, 6, 3, 4, 6, 6, 2, 1, 2, 2, 5, 7, 3, 3, 5, 6, 3, 1, ...
+## $ `Max Month`               &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Max Day`                 &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Man Year`                &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Man Month`               &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Man Day`                 &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Offense Jail Time Days`  &lt;dbl&gt; 91, 0, 2, 125, 0, 0, 0, 0, 0, 0, 1, 86, 145, 134, 51, 3, 385,...
+## $ `Offense Dead Time Days`  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46, 0, 0, 589, 0, 0...
+## $ `Habitual Criminal`       &lt;chr&gt; &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;...
+## $ `Precedence IND`          &lt;chr&gt; NA, NA, NA, &quot;P&quot;, NA, NA, NA, NA, NA, NA, &quot;P&quot;, &quot;P&quot;, NA, &quot;P&quot;, &quot;...
+## $ `PE Date Chg CD`          &lt;dbl&gt; 3, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+## $ `Minimum Yr`              &lt;dbl&gt; 4, 1, 0, 4, 1, 10, 10, 10, 1, 1, 1, 1, 1, 4, 1, 2, 5, 4, 1, 1...
+## $ `Minimum Mo`              &lt;dbl&gt; 0, 8, 0, 0, 6, 0, 0, 0, 4, 4, 0, 3, 8, 0, 6, 0, 0, 0, 8, 0, 0...
+## $ `Minimum  Day`            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Maximum Yr`              &lt;dbl&gt; 10, 2, 1, 6, 3, 16, 16, 16, 2, 2, 2, 2, 5, 7, 3, 3, 5, 6, 3, ...
+## $ `Maximum Mo`              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Maximum Day`             &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Begin Date`              &lt;dttm&gt; 2000-05-09, 1993-05-21, 2000-08-18, 2005-08-17, 1996-01-23, ...
+## $ `Sentence Jail Credit`    &lt;dbl&gt; 91, 0, 2, 125, 100, 71, 71, 71, 0, 0, 1, 86, 145, 134, 51, 3,...
+## $ `Man Min Yr`              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Man Min Mo`              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Man Min Day`             &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ `Man Min Term Date`       &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+</code></pre>
+
+<pre><code class="r">ds_inmateDB %&gt;% glimpse(80)
+</code></pre>
+
+<pre><code>## Observations: 69,300
+## Variables: 32
+## $ `ID NUMBER`                                   &lt;dbl&gt; 1702, 6145, 6452, 124...
+## $ `COMMITTED LAST NAME`                         &lt;chr&gt; &quot;CLIFFORD&quot;, &quot;KANE&quot;, &quot;...
+## $ `FIRST NAME..3`                               &lt;chr&gt; &quot;BRADLEY&quot;, &quot;THOMAS&quot;, ...
+## $ `MIDDLE NAME..4`                              &lt;chr&gt; NA, NA, NA, NA, NA, N...
+## $ `NAME EXTENSION..5`                           &lt;chr&gt; NA, NA, NA, NA, NA, N...
+## $ `LEGAL LAST NAME`                             &lt;chr&gt; NA, NA, NA, NA, NA, N...
+## $ `FIRST NAME..7`                               &lt;chr&gt; NA, NA, NA, NA, NA, N...
+## $ `MIDDLE NAME..8`                              &lt;chr&gt; NA, NA, NA, NA, NA, N...
+## $ `NAME EXTENSION..9`                           &lt;lgl&gt; NA, NA, NA, NA, NA, N...
+## $ `DATE OF BIRTH`                               &lt;dttm&gt; NA, 1928-12-21, 1929...
+## $ `RACE DESC`                                   &lt;chr&gt; NA, &quot;WHITE&quot;, &quot;WHITE&quot;,...
+## $ GENDER                                        &lt;chr&gt; &quot;MALE&quot;, &quot;MALE&quot;, &quot;MALE...
+## $ FACILITY                                      &lt;chr&gt; NA, &quot;NEBRASKA STATE P...
+## $ `CURRENT SENTENCE PARDONED OR COMMUTED DATE`  &lt;chr&gt; NA, NA, NA, NA, NA, N...
+## $ `GUN CLAUSE`                                  &lt;chr&gt; NA, NA, NA, NA, NA, N...
+## $ `SENTENCE BEGIN DATE`                         &lt;dttm&gt; NA, 1952-06-20, 1953...
+## $ `MIN TERM/YEAR`                               &lt;chr&gt; &quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;1&quot;, &quot;...
+## $ `MIN MONTH`                                   &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;...
+## $ `MIN DAY`                                     &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;...
+## $ `MAX TERM/YEAR`                               &lt;chr&gt; &quot;0&quot;, &quot;3&quot;, &quot;10&quot;, &quot;9&quot;, ...
+## $ `MAX MONTH`                                   &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, N...
+## $ `MAX DAY`                                     &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, N...
+## $ `PAROLE ELIGIBILITY DATE`                     &lt;chr&gt; NA, &quot;19165.0&quot;, NA, NA...
+## $ `EARLIEST POSSIBLE RELEASE DATE`              &lt;chr&gt; NA, NA, NA, NA, &quot;LFE&quot;...
+## $ `GOOD TIME LAW`                               &lt;chr&gt; NA, &quot;2926&quot;, NA, NA, &quot;...
+## $ `INST RELEASE DATE`                           &lt;dttm&gt; 1986-01-06, 1952-08-...
+## $ `INST RELEASE TYPE`                           &lt;chr&gt; &quot;MANDATORY DISCHARGE&quot;...
+## $ `PAROLE BOARD NEXT REVIEW DATE(MONTH&amp;YEAR)`   &lt;dttm&gt; NA, NA, NA, NA, NA, ...
+## $ `PAROLE BOARD FINAL HEARING DATE(MONTH&amp;YEAR)` &lt;dttm&gt; NA, NA, NA, NA, NA, ...
+## $ `PAROLE BOARD STATUS`                         &lt;chr&gt; NA, NA, &quot;PAROLED&quot;, NA...
+## $ `PAROLE DATE`                                 &lt;dttm&gt; NA, NA, 1980-12-09, ...
+## $ `PAROLE DISCHARGE DESC`                       &lt;chr&gt; NA, NA, &quot;EARLY DISCHA...
+</code></pre>
+
+<pre><code class="r"># adjust column names
+colnames(ds) &lt;- gsub(&quot; &quot; ,&quot;_&quot;,colnames(ds)) %&gt;% tolower()
+colnames(ds) &lt;- gsub(&quot;__&quot;,&quot;_&quot;,colnames(ds)) # remove doubles
+
+ds &lt;- ds %&gt;% 
+  dplyr::rename_(
+    &quot;person_id&quot; = &quot;idnumbercomb&quot;
+  ) %&gt;% 
+  dplyr::mutate(
+    conviction_id  = paste0(person_id,&quot;-&quot;,offense_arrest_cd)
+    ,year          = lubridate::year(begin_date)
+    ,offense_group = substr(offense_arrest_cd,1,1)
+    # ,offense_group = gsub(&quot;^(\\w{1})(\\d{2}))$&quot;,&quot;\\1&quot;, offense_arrest_cd)
+  )
+
+ds %&gt;% glimpse(100)
+</code></pre>
+
+<pre><code>## Observations: 120,381
+## Variables: 50
+## $ id_number               &lt;dbl&gt; 53731, 44473, 54131, 62706, 47816, 46628, 46628, 46628, 92913, ...
+## $ person_id               &lt;dbl&gt; 44473, 44473, 54131, 62706, 47816, 46628, 46628, 46628, 92913, ...
+## $ previous_id             &lt;dbl&gt; 44473, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 37142, 0, 0, 0, 0, 0, 0, 1...
+## $ inmate_name             &lt;chr&gt; &quot;AARON                     BOBBY&quot;, &quot;AARON                     B...
+## $ parole_eligibility_date &lt;dttm&gt; 2003-05-09, 1994-03-20, 2000-08-18, 2007-04-11, 1996-08-11, 19...
+## $ tentative_release_date  &lt;dttm&gt; 2006-02-10, 1994-07-20, 2001-02-15, 2008-04-11, 1997-09-26, 20...
+## $ earn_dschrg_dt          &lt;dttm&gt; NA, NA, NA, 2008-03-21, 1997-04-10, NA, NA, NA, NA, NA, 1988-0...
+## $ actual_dschrg_dt        &lt;dttm&gt; NA, NA, NA, 2008-03-21, NA, NA, NA, NA, NA, NA, 1988-01-30, NA...
+## $ good_time_law           &lt;dbl&gt; 6, 4, 6, 6, 4, 4, 4, 4, 1, 1, 1, 4, 7, 6, 7, 7, 7, 6, 1, 6, 6, ...
+## $ docket_count            &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+## $ county                  &lt;chr&gt; &quot;BUFFALO&quot;, &quot;LANCASTER&quot;, &quot;MADISON&quot;, &quot;DOUGLAS&quot;, &quot;DOUGLAS&quot;, &quot;DOUGL...
+## $ county_cd               &lt;dbl&gt; 10, 55, 59, 28, 28, 28, 28, 28, 28, 28, 55, 55, 27, 72, 19, 40,...
+## $ offense_begin_date      &lt;chr&gt; &quot;36655&quot;, &quot;1800-01-01&quot;, &quot;36756&quot;, &quot;38581&quot;, &quot;1800-01-01&quot;, &quot;1800-01...
+## $ offense_count           &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 2, 3, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, ...
+## $ offense_attmpt_cd       &lt;chr&gt; NA, &quot;A&quot;, NA, NA, NA, NA, NA, NA, NA, NA, &quot;A&quot;, NA, NA, NA, &quot;A&quot;, ...
+## $ offense_type_cd         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, &quot;A&quot;, NA, NA, NA, NA, NA, NA...
+## $ offense_run_cd          &lt;chr&gt; &quot;CC&quot;, &quot;CC&quot;, &quot;CC&quot;, &quot;CC&quot;, &quot;CC&quot;, &quot;CC&quot;, &quot;CS&quot;, &quot;CS&quot;, &quot;CC&quot;, &quot;CC&quot;, &quot;CC...
+## $ offense_arrest_cd       &lt;chr&gt; &quot;C31&quot;, &quot;D21&quot;, &quot;B26&quot;, &quot;C31&quot;, &quot;D20&quot;, &quot;B12&quot;, &quot;K02&quot;, &quot;C31&quot;, &quot;E62&quot;, ...
+## $ offense_arrest          &lt;chr&gt; &quot;MANU/DIST/DEL/DISP OR POSS W/I&quot;, &quot;THEFT&quot;, &quot;SEXUAL ASSAULT ON A...
+## $ cnvct_desc              &lt;chr&gt; &quot;POSSESSION CON SUB W/I DELIVER&quot;, NA, NA, &quot;POSSESSION W/I DELIV...
+## $ felony_msdmnr_cd        &lt;chr&gt; &quot;3F&quot;, &quot;F&quot;, &quot;3AF&quot;, &quot;3F&quot;, &quot;4F&quot;, &quot;4F&quot;, &quot;3F&quot;, &quot;2F&quot;, NA, NA, &quot;4F&quot;, &quot;...
+## $ min_year                &lt;dbl&gt; 4, 1, 0, 4, 1, 2, 4, 4, 1, 0, 1, 1, 1, 4, 1, 2, 5, 4, 1, 0, 1, ...
+## $ min_month               &lt;dbl&gt; 0, 8, 0, 0, 6, 0, 0, 0, 4, 0, 0, 3, 8, 0, 6, 0, 0, 0, 8, 0, 0, ...
+## $ min_day                 &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ max_year                &lt;dbl&gt; 10, 2, 1, 6, 3, 4, 6, 6, 2, 1, 2, 2, 5, 7, 3, 3, 5, 6, 3, 1, 1,...
+## $ max_month               &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ max_day                 &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ man_year                &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ man_month               &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ man_day                 &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ offense_jail_time_days  &lt;dbl&gt; 91, 0, 2, 125, 0, 0, 0, 0, 0, 0, 1, 86, 145, 134, 51, 3, 385, 3...
+## $ offense_dead_time_days  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 46, 0, 0, 589, 0, 0, ...
+## $ habitual_criminal       &lt;chr&gt; &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;, &quot;N&quot;...
+## $ precedence_ind          &lt;chr&gt; NA, NA, NA, &quot;P&quot;, NA, NA, NA, NA, NA, NA, &quot;P&quot;, &quot;P&quot;, NA, &quot;P&quot;, &quot;P&quot;...
+## $ pe_date_chg_cd          &lt;dbl&gt; 3, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+## $ minimum_yr              &lt;dbl&gt; 4, 1, 0, 4, 1, 10, 10, 10, 1, 1, 1, 1, 1, 4, 1, 2, 5, 4, 1, 1, ...
+## $ minimum_mo              &lt;dbl&gt; 0, 8, 0, 0, 6, 0, 0, 0, 4, 4, 0, 3, 8, 0, 6, 0, 0, 0, 8, 0, 0, ...
+## $ minimum_day             &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ maximum_yr              &lt;dbl&gt; 10, 2, 1, 6, 3, 16, 16, 16, 2, 2, 2, 2, 5, 7, 3, 3, 5, 6, 3, 1,...
+## $ maximum_mo              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ maximum_day             &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ begin_date              &lt;dttm&gt; 2000-05-09, 1993-05-21, 2000-08-18, 2005-08-17, 1996-01-23, 19...
+## $ sentence_jail_credit    &lt;dbl&gt; 91, 0, 2, 125, 100, 71, 71, 71, 0, 0, 1, 86, 145, 134, 51, 3, 3...
+## $ man_min_yr              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ man_min_mo              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ man_min_day             &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+## $ man_min_term_date       &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+## $ conviction_id           &lt;chr&gt; &quot;44473-C31&quot;, &quot;44473-D21&quot;, &quot;54131-B26&quot;, &quot;62706-C31&quot;, &quot;47816-D20&quot;...
+## $ year                    &lt;dbl&gt; 2000, 1993, 2000, 2005, 1996, 1995, 1995, 1995, 1989, 1989, 198...
+## $ offense_group           &lt;chr&gt; &quot;C&quot;, &quot;D&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;B&quot;, &quot;K&quot;, &quot;C&quot;, &quot;E&quot;, &quot;E&quot;, &quot;D&quot;, &quot;B&quot;, &quot;C&quot;...
+</code></pre>
+
+<pre><code class="r"># adjust column names
+colnames(meta) &lt;- gsub(&quot; &quot; ,&quot;_&quot;,colnames(meta)) %&gt;% tolower()
+meta &lt;- meta %&gt;% 
+  dplyr::mutate(
+    field_name = tolower( gsub(&quot; &quot; ,&quot;_&quot;,field_name) ) 
+  ) %&gt;% 
+  dplyr::slice(1:44)
+meta #%&gt;% neat()
+</code></pre>
+
+<pre><code>## # A tibble: 44 x 3
+##    field_name      description                     sample_data             
+##    &lt;chr&gt;           &lt;chr&gt;                           &lt;chr&gt;                   
+##  1 id_number       unique identifier for each inm~ 1                       
+##  2 previous_id_nu~ ID number of the person&#39;s prev~ 0                       
+##  3 inmate_name     name of the inmate              ABNEY                  ~
+##  4 parole_eligibi~ &quot;date at which the person is e~ &lt;NA&gt;                    
+##  5 tentative_rele~ &quot;date at which the person is e~ &lt;NA&gt;                    
+##  6 earn_dschrg_dt  date at which the person is ex~ 30085                   
+##  7 actual_dschrg_~ date the person actually disch~ 30034                   
+##  8 good_time_law   good time law that governs the~ &lt;NA&gt;                    
+##  9 docket_count    count of dockets in inmate&#39;s s~ 1                       
+## 10 county          county of commitment            OUT OF STATE            
+## # ... with 34 more rows
+</code></pre>
+
+<pre><code class="r">colnames(ds_inmateDB) &lt;- gsub(&quot; &quot; ,&quot;_&quot;,colnames(ds_inmateDB)) %&gt;% tolower()
+colnames(ds_inmateDB) &lt;- gsub(&quot;__&quot;,&quot;_&quot;,colnames(ds_inmateDB)) # remove doubles
+# colnames(ds_inmateDB) &lt;- gsub(&quot;..\\d{1}&quot;,&quot;&quot;,colnames(ds_inmateDB)) # remove doubles
+colnames(ds_inmateDB) 
+</code></pre>
+
+<pre><code>##  [1] &quot;id_number&quot;                                  
+##  [2] &quot;committed_last_name&quot;                        
+##  [3] &quot;first_name..3&quot;                              
+##  [4] &quot;middle_name..4&quot;                             
+##  [5] &quot;name_extension..5&quot;                          
+##  [6] &quot;legal_last_name&quot;                            
+##  [7] &quot;first_name..7&quot;                              
+##  [8] &quot;middle_name..8&quot;                             
+##  [9] &quot;name_extension..9&quot;                          
+## [10] &quot;date_of_birth&quot;                              
+## [11] &quot;race_desc&quot;                                  
+## [12] &quot;gender&quot;                                     
+## [13] &quot;facility&quot;                                   
+## [14] &quot;current_sentence_pardoned_or_commuted_date&quot; 
+## [15] &quot;gun_clause&quot;                                 
+## [16] &quot;sentence_begin_date&quot;                        
+## [17] &quot;min_term/year&quot;                              
+## [18] &quot;min_month&quot;                                  
+## [19] &quot;min_day&quot;                                    
+## [20] &quot;max_term/year&quot;                              
+## [21] &quot;max_month&quot;                                  
+## [22] &quot;max_day&quot;                                    
+## [23] &quot;parole_eligibility_date&quot;                    
+## [24] &quot;earliest_possible_release_date&quot;             
+## [25] &quot;good_time_law&quot;                              
+## [26] &quot;inst_release_date&quot;                          
+## [27] &quot;inst_release_type&quot;                          
+## [28] &quot;parole_board_next_review_date(month&amp;year)&quot;  
+## [29] &quot;parole_board_final_hearing_date(month&amp;year)&quot;
+## [30] &quot;parole_board_status&quot;                        
+## [31] &quot;parole_date&quot;                                
+## [32] &quot;parole_discharge_desc&quot;
+</code></pre>
+
+<pre><code class="r">ds %&gt;% saveRDS(&quot;./data-unshared/derived/0-dto.rds&quot;)
+
+meta %&gt;% readr::write_csv(&quot;./data-public/derived/all-sentences-codebook.csv&quot;)
+</code></pre>
+
+<pre><code class="r"># focus on a few variables
+d1 &lt;- ds %&gt;%
+  dplyr::mutate(
+    conviction_id  = paste0(person_id,&quot;-&quot;,offense_arrest_cd)
+    ,year          = lubridate::year(begin_date)
+    ,offense_group = substr(offense_arrest_cd,1,1)
+    # ,offense_group = gsub(&quot;^(\\w{1})(\\d{2}))$&quot;,&quot;\\1&quot;, offense_arrest_cd)
+  ) %&gt;% 
+  dplyr::select_(.dots = c(
+    &quot;person_id&quot;
+    ,&quot;begin_date&quot;
+    ,&quot;offense_arrest_cd&quot;
+    ,&quot;offense_arrest&quot;
+    ,&quot;conviction_id&quot;
+    ,&quot;year&quot;
+    ,&quot;offense_group&quot;
+    )
+  )
+d1 %&gt;% glimpse(100)
+</code></pre>
+
+<pre><code>## Observations: 120,381
+## Variables: 7
+## $ person_id         &lt;dbl&gt; 44473, 44473, 54131, 62706, 47816, 46628, 46628, 46628, 92913, 92913,...
+## $ begin_date        &lt;dttm&gt; 2000-05-09, 1993-05-21, 2000-08-18, 2005-08-17, 1996-01-23, 1995-03-...
+## $ offense_arrest_cd &lt;chr&gt; &quot;C31&quot;, &quot;D21&quot;, &quot;B26&quot;, &quot;C31&quot;, &quot;D20&quot;, &quot;B12&quot;, &quot;K02&quot;, &quot;C31&quot;, &quot;E62&quot;, &quot;E63&quot;,...
+## $ offense_arrest    &lt;chr&gt; &quot;MANU/DIST/DEL/DISP OR POSS W/I&quot;, &quot;THEFT&quot;, &quot;SEXUAL ASSAULT ON A CHILD...
+## $ conviction_id     &lt;chr&gt; &quot;44473-C31&quot;, &quot;44473-D21&quot;, &quot;54131-B26&quot;, &quot;62706-C31&quot;, &quot;47816-D20&quot;, &quot;466...
+## $ year              &lt;dbl&gt; 2000, 1993, 2000, 2005, 1996, 1995, 1995, 1995, 1989, 1989, 1986, 199...
+## $ offense_group     &lt;chr&gt; &quot;C&quot;, &quot;D&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;B&quot;, &quot;K&quot;, &quot;C&quot;, &quot;E&quot;, &quot;E&quot;, &quot;D&quot;, &quot;B&quot;, &quot;C&quot;, &quot;C&quot;,...
+</code></pre>
+
+<pre><code class="r">d2 &lt;- d1 %&gt;% 
+  dplyr::mutate(
+    conviction_id = paste0(person_id,&quot;-&quot;,offense_arrest_cd)
+    ,year         = lubridate::year(begin_date)
+    # ,offense_group = gsub(&quot;^(\\w{1})(\\d{2}))$&quot;,&quot;\\1&quot;, offense_arrest_cd)
+    ,offense_group = substr(offense_arrest_cd,1,1)
+  )
+
+d2 %&gt;% glimpse(100)
+</code></pre>
+
+<pre><code>## Observations: 120,381
+## Variables: 7
+## $ person_id         &lt;dbl&gt; 44473, 44473, 54131, 62706, 47816, 46628, 46628, 46628, 92913, 92913,...
+## $ begin_date        &lt;dttm&gt; 2000-05-09, 1993-05-21, 2000-08-18, 2005-08-17, 1996-01-23, 1995-03-...
+## $ offense_arrest_cd &lt;chr&gt; &quot;C31&quot;, &quot;D21&quot;, &quot;B26&quot;, &quot;C31&quot;, &quot;D20&quot;, &quot;B12&quot;, &quot;K02&quot;, &quot;C31&quot;, &quot;E62&quot;, &quot;E63&quot;,...
+## $ offense_arrest    &lt;chr&gt; &quot;MANU/DIST/DEL/DISP OR POSS W/I&quot;, &quot;THEFT&quot;, &quot;SEXUAL ASSAULT ON A CHILD...
+## $ conviction_id     &lt;chr&gt; &quot;44473-C31&quot;, &quot;44473-D21&quot;, &quot;54131-B26&quot;, &quot;62706-C31&quot;, &quot;47816-D20&quot;, &quot;466...
+## $ year              &lt;dbl&gt; 2000, 1993, 2000, 2005, 1996, 1995, 1995, 1995, 1989, 1989, 1986, 199...
+## $ offense_group     &lt;chr&gt; &quot;C&quot;, &quot;D&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;B&quot;, &quot;K&quot;, &quot;C&quot;, &quot;E&quot;, &quot;E&quot;, &quot;D&quot;, &quot;B&quot;, &quot;C&quot;, &quot;C&quot;,...
+</code></pre>
+
+<pre><code class="r">d2 %&gt;% group_by(offense_group) %&gt;% count() %&gt;% neat() # rows
+</code></pre>
+
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; ">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> offense_group </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> A </td>
+   <td style="text-align:right;"> 1180 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> B </td>
+   <td style="text-align:right;"> 27171 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> C </td>
+   <td style="text-align:right;"> 21229 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> D </td>
+   <td style="text-align:right;"> 31779 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> E </td>
+   <td style="text-align:right;"> 9632 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> F </td>
+   <td style="text-align:right;"> 2084 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> G </td>
+   <td style="text-align:right;"> 664 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> H </td>
+   <td style="text-align:right;"> 8910 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> J </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> K </td>
+   <td style="text-align:right;"> 6429 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> L </td>
+   <td style="text-align:right;"> 106 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> M </td>
+   <td style="text-align:right;"> 8176 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Z </td>
+   <td style="text-align:right;"> 2709 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> 309 </td>
+  </tr>
+</tbody>
+</table>
+
+<pre><code class="r">d2 %&gt;% group_by(offense_group) %&gt;% summarize(n=length(unique(person_id))) %&gt;% neat() # persons
+</code></pre>
+
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; ">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> offense_group </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> A </td>
+   <td style="text-align:right;"> 1074 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> B </td>
+   <td style="text-align:right;"> 17925 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> C </td>
+   <td style="text-align:right;"> 14865 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> D </td>
+   <td style="text-align:right;"> 16862 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> E </td>
+   <td style="text-align:right;"> 5046 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> F </td>
+   <td style="text-align:right;"> 1562 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> G </td>
+   <td style="text-align:right;"> 316 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> H </td>
+   <td style="text-align:right;"> 6581 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> J </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> K </td>
+   <td style="text-align:right;"> 4986 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> L </td>
+   <td style="text-align:right;"> 65 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> M </td>
+   <td style="text-align:right;"> 5119 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Z </td>
+   <td style="text-align:right;"> 2467 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NA </td>
+   <td style="text-align:right;"> 278 </td>
+  </tr>
+</tbody>
+</table>
+
+<pre><code class="r"># type of offense total
+d2 %&gt;% 
+  dplyr::filter(year &gt; 1974) %&gt;% 
+  dplyr::group_by(offense_group) %&gt;% 
+  dplyr::count() %&gt;% 
+  ggplot2::ggplot(aes(x = offense_group, y = n ))+
+  geom_bar(stat = &quot;identity&quot;)+
+  coord_flip()+
+  theme_minimal()
+</code></pre>
+
+<p><img src="figure/0-greeter-Rmdinitial-explorations-1-1.png" title="plot of chunk initial-explorations-1" alt="plot of chunk initial-explorations-1" style="display: block; margin: auto;" /></p>
+
+<pre><code class="r"># type of offsen by year
+d2 %&gt;% 
+  dplyr::filter(year &gt; 1974) %&gt;% 
+  dplyr::group_by(offense_group, year) %&gt;% 
+  dplyr::count() %&gt;% 
+  ggplot2::ggplot(aes(x = year, y = offense_group, fill = n ))+
+  # geom_raster()+
+  geom_tile(color = &quot;grey80&quot;)+
+  scale_fill_gradient2( high = &quot;red&quot;)+
+  theme_minimal()
+</code></pre>
+
+<p><img src="figure/0-greeter-Rmdinitial-explorations-1-2.png" title="plot of chunk initial-explorations-1" alt="plot of chunk initial-explorations-1" style="display: block; margin: auto;" /></p>
+
+<pre><code class="r"># type of drug offense by year
+d2 %&gt;% 
+  dplyr::filter(year &gt; 1974) %&gt;% 
+  dplyr::filter(offense_group == &quot;C&quot;) %&gt;% 
+  dplyr::group_by(offense_arrest, year) %&gt;% 
+  dplyr::count() %&gt;% 
+  ggplot2::ggplot(aes(x = year, y = offense_arrest, fill = n ))+
+  geom_tile(color = &quot;grey80&quot;)+
+  scale_fill_gradient2( high = &quot;blue&quot;)+
+  # scale_fill_gradient2( high = &quot;red&quot;)+
+  theme_minimal()
+</code></pre>
+
+<p><img src="figure/0-greeter-Rmdinitial-explorations-2-1.png" title="plot of chunk initial-explorations-2" alt="plot of chunk initial-explorations-2" style="display: block; margin: auto;" /></p>
+
+<pre><code class="r"># see our research jounal https://docs.google.com/document/d/1_EhkXgkBZTJ8nc02rr8Z4wrbzSbvvT6VZoQJi6DAhNQ/edit?usp=sharing
+</code></pre>
+
+<pre><code class="r">rmarkdown::render(
+  input = &quot;./analysis/0-greeter/0-greeter.Rmd&quot;
+  ,output_format = c(
+    &quot;html_document&quot; 
+    # &quot;pdf_document&quot;
+    ,&quot;md_document&quot;
+    # &quot;word_document&quot; 
+  )
+  ,clean=TRUE
+)
+</code></pre>
+
+<pre><code>## 
+## 
+## processing file: 0-greeter.Rmd
+</code></pre>
+
+<pre><code>## Error in parse_block(g[-1], g[1], params.src): duplicate label &#39;session-info&#39;
+</code></pre>
+
+<p>The R session information (including the OS info, R version and all
+packages used):</p>
+
+<pre><code class="r">sessionInfo()
+</code></pre>
+
+<pre><code>## R version 3.5.2 (2018-12-20)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows &gt;= 8 x64 (build 9200)
+## 
+## Matrix products: default
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.1252 
+## [2] LC_CTYPE=English_United States.1252   
+## [3] LC_MONETARY=English_United States.1252
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] bindrcpp_0.2.2 readxl_1.2.0   ggpubr_0.2     ggplot2_3.1.0 
+## [5] dplyr_0.7.8    magrittr_1.5  
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_1.0.0        highr_0.7         cellranger_1.1.0 
+##  [4] pillar_1.3.1      compiler_3.5.2    plyr_1.8.4       
+##  [7] bindr_0.1.1       tools_3.5.2       digest_0.6.18    
+## [10] viridisLite_0.3.0 lubridate_1.7.4   evaluate_0.13    
+## [13] tibble_2.0.1      gtable_0.2.0      pkgconfig_2.0.2  
+## [16] rlang_0.3.1       cli_1.0.1         rstudioapi_0.9.0 
+## [19] yaml_2.2.0        xfun_0.5          kableExtra_1.0.1 
+## [22] xml2_1.2.0        httr_1.4.0        withr_2.1.2      
+## [25] stringr_1.4.0     knitr_1.21        hms_0.4.2        
+## [28] webshot_0.5.1     grid_3.5.2        tidyselect_0.2.5 
+## [31] glue_1.3.0        R6_2.4.0          fansi_0.4.0      
+## [34] rmarkdown_1.11    readr_1.3.1       purrr_0.2.5      
+## [37] scales_1.0.0      htmltools_0.3.6   rvest_0.3.2      
+## [40] rsconnect_0.8.13  assertthat_0.2.0  colorspace_1.4-0 
+## [43] labeling_0.3      utf8_1.1.4        stringi_1.3.1    
+## [46] lazyeval_0.2.1    munsell_0.5.0     crayon_1.3.4
+</code></pre>
+
+<pre><code class="r">Sys.time()
+</code></pre>
+
+<pre><code>## [1] &quot;2019-04-30 08:18:15 EDT&quot;
+</code></pre>
+
+</body>
+
+</html>
