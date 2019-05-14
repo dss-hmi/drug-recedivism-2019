@@ -54,7 +54,10 @@ read_chunk("./analysis/eda-1/eda-1.R")
 
 # I. Exposition 
 
-Some text here
+This report begins analytic inquiry of the data stored in the `data transfer object` (`dto`) prepared by the [`./manipulation/0-greeter.R`][greeter_html_path] script. 
+
+[greeter_html_path]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/master/analysis/0-greeter/0-greeter.html
+
 <!-- Load 'sourced' R files.  Suppress the output when loading packages. --> 
 ```{r load-packages, echo=echoChunks, message=FALSE}
 ```
@@ -71,10 +74,9 @@ Some text here
 
 <!-- Declare any global functions specific to a Rmd output.  Suppress the output. --> 
 ```{r, echo=echoChunks, message=FALSE}
-#Put code in here.  It doesn't call a chunk in the codebehind file.
 ```
 
-## I.A. Data
+## I. Data
 <!-- Load the datasets.   -->
 ```{r load-data, echo=echoChunks, results='show', message=FALSE}
 ```

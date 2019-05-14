@@ -42,6 +42,9 @@ ds_inmate   %>% pryr::object_size(); ds_inmate%>% dim()
 # ---- tweak-1 -----------------------------------------------------
 # Tweak SENTENCES
 ds_sentence %>% dplyr::glimpse(100)
+# replace code values for date variables
+ds_sentence[ds_sentence == "1800-01-01"] <- NA # '1800-01-01' indicates conversion error
+
 # remove illegal characters in variable names
 colnames(ds_sentence) <- gsub(" " ,"_",colnames(ds_sentence)) %>% tolower()
 colnames(ds_sentence) <- gsub("__","_",colnames(ds_sentence)) # remove doubles
