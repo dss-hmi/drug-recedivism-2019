@@ -61,8 +61,8 @@ ds <- ds %>%
   dplyr::select(c(
     "person_id"          # idnumbercomb, manually checked to represent a unique person 
     ,"begin_date"        # date the person began serving the aggregate sentence
-    ,"offense_count"     # count of offenses in inmate's sentence
     ,"offense_arrest_cd" # code for the offense committed   
+    ,"offense_count"     # count of offenses in inmate's sentence
     ,"offense_arrest"    # standardized description of the offense committed
     # the rest will be computed
     # ,"conviction_id"     # person_id + offense_arrest_cd
@@ -80,11 +80,11 @@ ds <- ds %>%
   # create new
   dplyr::mutate(
     # to discern multiple convictions on the same date, compute conviction_id
-    conviction_id       = paste0(person_id,"-",offense_arrest_cd)  
+    # conviction_id       = paste0(person_id,"-",offense_arrest_cd)
     # add auxillary variable for grouping and printing
-    ,year               = lubridate::year(begin_date)
-    ,month              = lubridate::month(begin_date)
-    ,offense_group      = substr(offense_arrest_cd,1,1)
+    # ,year               = lubridate::year(begin_date)
+    # ,month              = lubridate::month(begin_date)
+    offense_group      = substr(offense_arrest_cd,1,1)
   ) 
 
 # view the contents of the codebook for these variables
@@ -97,6 +97,41 @@ ds_codebook %>%
   )) %>% 
   # neat()
   knitr::kable(format = "pandoc")
+
+# ----- how-to-count ---------------------------------------------
+# ultimately, we would like to have a ds with row = person-by-time
+
+# before we can collapse into person-by-time structure, we need to
+# clarify how/what would be counted during this aggregation
+
+# We will distinguish three aggregate levels in our data:
+
+# person_id                                  # person     level
+# person_id + begin_date                     # sentence   level
+# person_id + begin_date + offense_arrest_cd # conviction level
+
+# person_id + begin_date + offense_group 
+
+# NOTE: one may have multiple convictions on the same date
+
+# compute variables at the conviction level
+ds_before_aggregate <- ds %>% 
+  dplyr::filter(person_id %in% c(46222,65392, 50495) ) %>% # for testing
+  dplyr::arrange(person_id, begin_date, offense_arrest_cd) %>% 
+  dplyr::group_by(person_id) %>% 
+  dplyr::mutate(
+    conviction_order = dplyr::row_number() # sequential order of convictions
+    ,n_convictions = dplyr::n() # total number of convictions a person has
+  ) %>%
+  dplyr::ungroup() %>% 
+  dplyr::mutate(
+    drug_related = ifelse(offense_group == "C", TRUE, NA)
+    ,drug_order = cumsum(!is.na(drug_related))
+    ,drug_order = ifelse(is.na(drug_related), NA, drug_order)
+    ,after_1996   = ifelse(begin_date > "1996-01-01", TRUE, NA)
+    ,days_bw_conv = begin_date - dplyr::lag(begin_date,1)
+  )
+
 
 # ---- create-sample-set ------------------------------------------------
 # would would like to have a smaller number of cases to work with
@@ -180,12 +215,13 @@ ds_sample <- ds %>%
 # drug offense after 1996
 
 
-d1 <- ds_sample %>% 
+# d1 <- ds_sample %>% 
+d1 <- ds %>% 
   dplyr::filter(person_id %in% c(46222,65392, 50495) ) %>% 
   dplyr::arrange(person_id, begin_date, offense_arrest_cd) %>% 
   dplyr::group_by(person_id) %>% 
   dplyr::mutate(
-    conviction_order = row_number()
+    conviction_order = dplyr::row_number()
   ) %>% 
   dplyr::mutate(
     drug_related = ifelse(offense_group == "C", TRUE, NA)
