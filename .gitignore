@@ -105,3 +105,4 @@ Desktop.ini
 #     2. reorganized and moved above this chunk (so it won't be confused with files added unintentionally).
 analysis/0-greeter/0-greeter.md
 analysis/1-aggregator/1-aggregator.md
+analysis/eda-1/eda-1.md
