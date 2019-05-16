@@ -1,0 +1,162 @@
+---
+title: "1-aggregator"
+output:
+  html_document:
+    always_allow_html: yes
+    css: ../../libs/css/sidebar.css
+    df_print: kable
+    highlight: tango
+    keep_md: yes
+    theme: spacelab
+    toc: yes
+  pdf_document: 
+    highlight: pygments
+    toc: yes
+---
+
+<!-- These two chunks should be added in the beginning of every .Rmd that you want to source an .R script -->
+<!--  The 1st mandatory chunck  -->
+<!--  Set the working directory to the repository's base directory -->
+```{r, echo=F, message=F} 
+#Don't combine this call with any other chunk 
+# cat("Working directory: ", getwd()) # check where you are
+  library(knitr)
+# Rmd is in "./reports/reportA/reportA.Rmd", but now the root is "./"
+  knitr::opts_knit$set(root.dir='../../') 
+```
+
+<!--  The 2nd mandatory chunck  -->
+<!-- Set the report-wide options, and point to the external code file. -->
+```{r set_options, echo=F}
+# set options shared by all chunks
+report_render_start_time <- Sys.time()
+opts_chunk$set(
+  results='show', 
+  message = TRUE,
+  comment = NA, 
+  tidy = FALSE,
+  fig.height = 7, 
+  fig.width = 12, 
+  out.width = "900px",
+  fig.path = 'figure_rmd/',     
+  dev = "png",
+  dpi = 400
+  # fig.path = 'figure_pdf/',     
+  # dev = "pdf"#,
+  # dev.args=list(pdf = list(colormodel = 'cmyk'))
+)
+echoChunks <- TRUE
+warningChunk <- FALSE
+options(width=120) #So the output is 50% wider than the default.
+# connect to the file with the underlying R script  
+read_chunk("./manipulation/1-aggregator.R") 
+```
+
+
+This document is the annotation layer to [`./manipulation/1-aggregator.R`][path_aggregator] script, which uses the product of  [`./manipulation/1-greeter.R`][path_greeter] to compute counts of conviction events at different aggregation levels, among which we will  distinquish:
+
+|  ds# | group_by  |  label|
+|---|---|---|
+|(4)  |person_id                                   |person     level                |  
+|(3)  |person_id +              offense_group      |person     level with groups    |  
+|(2)  |person_id + begin_date                      |sentence   level                |  
+|(1)  |person_id + begin_date + offense_group      |conviction level  less granualr |  
+|(0)  |person_id + begin_date + offense_arrest_cd  |conviction level  more granular|  
+
+
+[path_greeter]:https://github.com/dss-hmi/drug-recedivism-2019/blob/master/manipulation/0-greeter.R
+[path_aggregator]:https://github.com/dss-hmi/drug-recedivism-2019/blob/master/manipulation/1-aggregator.R
+
+# I. Environment
+
+<!-- Load 'sourced' R files.  Suppress the output when loading packages. --> 
+```{r load-packages, echo=echoChunks, message=FALSE, warning = warningChunk}
+```
+
+
+<!-- Load the sources.  Suppress the output when loading sources. --> 
+```{r load-sources, echo=echoChunks, message=FALSE}
+```
+
+
+<!-- Load any Global functions and variables declared in the R file.  Suppress the output. --> 
+```{r declare-globals, echo=echoChunks, results='show', message=FALSE}
+```
+
+<!-- Declare any global functions specific to a Rmd output.  Suppress the output. --> 
+```{r, echo=echoChunks, message=FALSE}
+```
+
+# II. Input
+<!-- Load the datasets.   -->
+```{r load-data, echo=echoChunks, results='show', message=FALSE, warning=FALSE}
+```
+
+<!-- Inspect the datasets.   -->
+```{r inspect-data, echo=echoChunks, results='show', message=FALSE}
+```
+
+# III. Groom
+<!-- Tweak the datasets.   -->
+```{r tweak-data, echo=echoChunks, results='show', message=FALSE}
+```
+
+# IV. Aggregate
+
+## `ds0`
+```{r agg-0, echo=echoChunks, results='show', message=FALSE}
+```
+
+Let us define the function that would govern the computation of variables during aggregation
+```{r agg-function, echo=echoChunks, results='show', message=FALSE}
+```
+
+## `ds1`
+```{r agg-1, echo=echoChunks, results='show', message=FALSE}
+```
+
+## `ds2`
+```{r agg-2, echo=echoChunks, results='show', message=FALSE}
+```
+
+## `ds3`
+```{r agg-3, echo=echoChunks, results='show', message=FALSE}
+```
+
+## `ds4`
+```{r agg-4, echo=echoChunks, results='show', message=FALSE}
+```
+
+
+
+
+# V. Save to Disk
+
+```{r save-to-disk, echo=TRUE, results='show', message=FALSE}
+```
+
+
+
+Session Information {#session-info}
+===========================================================================
+
+For the sake of documentation and reproducibility, the current report was rendered in the following environment.  Click the line below to expand.
+
+<details>
+  <summary>Environment <span class="glyphicon glyphicon-plus-sign"></span></summary>
+```{r session-info, echo=FALSE}
+if( requireNamespace("devtools", quietly = TRUE) ) {
+  devtools::session_info()
+} else {
+  sessionInfo()
+}
+```
+</details>
+
+```{r session-duration, echo=FALSE}
+report_render_duration_in_seconds <- round(as.numeric(difftime(Sys.time(), report_render_start_time, units="secs")))
+```
+
+Report rendered by `r Sys.info()["user"]` at `r strftime(Sys.time(), "%Y-%m-%d, %H:%M %z")` in `r report_render_duration_in_seconds` seconds.
+
+
