@@ -36,7 +36,7 @@ ds_inmate   <- readxl::read_excel(path_file_input_inmateDB)
 # ---- inspect-data ---------------------------------------------------------------
 # what are the basic specs (size, nrow, ncol) of these objects?
 ds_sentence %>% pryr::object_size(); ds_sentence %>% dim()
-ds_codebook     %>% pryr::object_size(); ds_codebook%>% dim()
+ds_codebook %>% pryr::object_size(); ds_codebook%>% dim()
 ds_inmate   %>% pryr::object_size(); ds_inmate%>% dim()
 
 # ---- tweak-1 -----------------------------------------------------
@@ -59,13 +59,14 @@ ds_sentence <- ds_sentence %>%
     ,year          = lubridate::year(begin_date)     # for aggregation and graphing
     ,month         = lubridate::month(begin_date)    # for aggregation and graphing 
     ,offense_group = substr(offense_arrest_cd, 1, 1) # for aggregation and graphing
-  )
+  ) %>% 
+  dplyr::arrange(person_id, begin_date, offense_arrest_cd)
 ds_sentence %>% dplyr::glimpse(100)
 
 
 # ---- tweak-2 -----------------------------------------------------
 # Tweak CODEBOOK for sentences
-ds_codebook %>% glimpse(80)
+ds_codebook %>% dplyr::glimpse(80)
 # remove illegal characters in variable names
 colnames(ds_codebook) <- gsub(" " ,"_",colnames(ds_codebook)) %>% tolower()
 colnames(ds_codebook) <- gsub("__","_",colnames(ds_codebook)) # remove doubles
@@ -74,111 +75,56 @@ ds_codebook <- ds_codebook %>%
     field_name  = tolower( gsub(" " ,"_",field_name) ) # to be consistent with `ds_sentence`
     ,field_name =          gsub("__","_",field_name)   # to be consistent with `ds_sentence`
   ) 
-ds_codebook %>% glimpse(80)
-
-ds_codebook %>% neat()
+ds_codebook %>% dplyr::glimpse(80)
 
 # ---- tweak-3 -----------------------------------------------------
 # Tweak INMATE DATABASE 
-ds_inmate %>% glimpse(80)
+ds_inmate %>% dplyr::glimpse(80)
 # remove illegal characters in variable names
 colnames(ds_inmate) <- gsub(" " ,"_",colnames(ds_inmate)) %>% tolower()      # remove spaces between words
 colnames(ds_inmate) <- gsub("__","_",colnames(ds_inmate))                    # remove doubles
 
 colnames(ds_inmate) <- gsub("['(']\\month&year[')']","",colnames(ds_inmate)) # remove special characters
 colnames(ds_inmate) <- gsub("/","_",colnames(ds_inmate))                     # remove special characters
-colnames(ds_inmate) <- gsub("...\\d{1}$","",colnames(ds_inmate))              # remove debree from auto-rename
+colnames(ds_inmate) <- gsub("(...)(\\d{1})$","_\\2",colnames(ds_inmate))              # remove debree from auto-rename
 
 # colnames(ds_inmate) <- gsub(" $","",colnames(ds_inmate))                   # remove trailing space
-ds_inmate %>% glimpse(80)
+ds_inmate %>% dplyr::glimpse(80)
 
 # ---- basic-graph -------------------------------------------------------
 
 
 # ---- define-utility-functions ---------------
 
-# ---- basic-pivot-prep ----------------------------
+# ---- inspect-1 ----------------------------
+ds_sentence %>% 
+  dplyr::filter(person_id %in% c(46222,65392, 50495) ) %>% # for testing
+  dplyr::select(c(
+        "person_id"          # idnumbercomb, manually checked to represent a unique person 
+        ,"inmate_name"
+        ,"begin_date"        # date the person began serving the aggregate sentence
+        ,"offense_arrest_cd" # code for the offense committed   
+        ,"offense_count"     # count of offenses in inmate's sentence
+        ,"offense_arrest"    # standardized description of the offense committed
+      )) %>% 
+  neat(caption = "Sample records from `Sentences` data set")
 
-a <- ds_sentence %>% 
-  dplyr::group_by(person_id) %>% # for each person
-  dplyr::summarize(
-    n_convictions = length(unique(conviction_id)) # count how many convictions s/he has
-  ) %>% 
-  dplyr::ungroup() 
+# ---- inspect-2 ----------------------------
+ds_codebook %>% neat(caption = "Codebook for `Sentences` data set" )
 
-b <- a %>% 
-  dplyr::group_by(n_convictions) %>% # for each number of convictions
-  dplyr::summarize(
-    n_people = length(unique(person_id)) # count how many people had this many convictions
-  )
+# ---- inspect-3 ----------------------------
+ds_inmate %>% 
+  dplyr::filter(id_number %in% c(46222,65392, 50495) ) %>% 
+  dplyr::select(c(
+    "id_number"
+    ,"committed_last_name"
+    ,"date_of_birth"
+    ,"race_desc"
+    ,"gender"
+    ,"sentence_begin_date"
+  )) %>% 
+  neat(caption = "Sample records from `Inmate` data set")
 
-sample_from_n_conviction <- function(
-  d
-  ,sample_size
-  ,n_conv
-){
-  
-  a <- d %>% 
-    dplyr::group_by(person_id) %>% # for each person
-    dplyr::summarize(
-      n_convictions = length(unique(conviction_id)) # count how many convictions s/he has
-    ) %>% 
-    dplyr::ungroup() 
-  
-  b <- a %>% 
-    dplyr::group_by(n_convictions) %>% # for each number of convictions
-    dplyr::summarize(
-      n_people = length(unique(person_id)) # count how many people had this many convictions
-    )
-  
-  persons_with_n_convictions <- a %>% 
-    filter(n_convictions == n_conv) %>% 
-    dplyr::distinct(person_id) %>% na.omit() %>% 
-    as.list() %>% unlist() %>% as.vector() 
-  
-  sample_of_persons_with_n_convictions <- persons_with_n_convictions %>% 
-    sample(size = sample_size, replace = FALSE )
-}
-
-set.seed(42)
-sample_id_2 <- ds_sentence %>% sample_from_n_conviction(sample_size = 6,n_conv = 2)
-sample_id_3 <- ds_sentence %>% sample_from_n_conviction(sample_size = 3,n_conv = 3)
-sample_id_4 <- ds_sentence %>% sample_from_n_conviction(sample_size = 4,n_conv = 4)
-sample_id_6 <- ds_sentence %>% sample_from_n_conviction(sample_size = 1,n_conv = 6)
-sample_id_7 <- ds_sentence %>% sample_from_n_conviction(sample_size = 1,n_conv = 6)
-
-ds_sentence_sample <- ds_sentence %>% 
-  dplyr::filter(person_id %in% c(
-     sample_id_2
-    ,sample_id_3
-    ,sample_id_4
-    ,sample_id_6
-    ,sample_id_7
-  ))
-
-get_a_sample <- function(
-  d,
-  varname            # unique of these
-  ,sample_size
-  ,show_all = FALSE
-){
-  # varname = "offense_arrest_cd"
-  sample_pool <- d %>% 
-    dplyr::distinct_(.dots = varname) %>% na.omit() %>% 
-    as.list() %>% unlist() %>% as.vector() 
-  if(show_all){ sample_size = length(sample_pool)}
-  selected_sample <- sample_pool %>% sample(size = sample_size, replace = FALSE )
-  
-  return(selected_sample)
-}  
-
-ds_inmate_sample <- ds_inmate %>% get_a_sample("id_number", sample_size = 20)
-# ---- basic-pivot-print ----------------------------
-
-# print the pivots
-ds_sentence_sample %>% neat_DT(caption = "Sample records from `Sentences` data set")
-ds_codebook %>% neat_DT(caption = "Codebook for `Sentences` data set" )
-ds_inmate_sample %>% neat_DT(caption = "Sample records from `Inmate` data set")
 
 # ---- save-to-disk ----------------------------
 dto <- list(
@@ -191,7 +137,8 @@ dto %>% pryr::object_size()
 dto %>% saveRDS("./data-unshared/derived/0-dto.rds") # for piping further
 ds_codebook %>% readr::write_csv("./data-public/derived/all-sentences-codebook.csv") # for read-only inspection
 
-# see our research jounal https://docs.google.com/document/d/1_EhkXgkBZTJ8nc02rr8Z4wrbzSbvvT6VZoQJi6DAhNQ/edit?usp=sharing
+# see our research jounal at
+# https://docs.google.com/document/d/1_EhkXgkBZTJ8nc02rr8Z4wrbzSbvvT6VZoQJi6DAhNQ/edit?usp=sharing
 
 # ---- publish ---------------------------------
 rmarkdown::render(

@@ -76,7 +76,7 @@ This document is the annotation layer to [`./manipulation/0-greeter.R`][path_gre
 ```{r, echo=echoChunks, message=FALSE}
 ```
 
-# II. Data
+# II. Input
 <!-- Load the datasets.   -->
 ```{r load-data, echo=echoChunks, results='show', message=FALSE, warning=FALSE}
 ```
@@ -85,7 +85,7 @@ This document is the annotation layer to [`./manipulation/0-greeter.R`][path_gre
 ```{r inspect-data, echo=echoChunks, results='show', message=FALSE}
 ```
 
-# III. Grooming
+# III. Groom
 <!-- Tweak the datasets.   -->
 ```{r tweak-data, echo=echoChunks, results='show', message=FALSE}
 ```
@@ -102,7 +102,19 @@ This document is the annotation layer to [`./manipulation/0-greeter.R`][path_gre
 ```{r tweak-3, echo=echoChunks, results='show', message=FALSE}
 ```
 
+# IV. Inspect
 
+## Sentences
+```{r inspect-1, echo=TRUE, results='show', message=FALSE}
+```
+
+## Codebook
+```{r inspect-2, echo=TRUE, results='show', message=FALSE}
+```
+
+## Inmate DB
+```{r inspect-3, echo=TRUE, results='show', message=FALSE}
+```
 <!-- Basic table view.   -->
 ```{r basic-table, echo=TRUE, results='show', message=FALSE}
 ```
@@ -113,7 +125,7 @@ This document is the annotation layer to [`./manipulation/0-greeter.R`][path_gre
 
 
 
-# IV. Store
+# V. Save to Disk
 
 Let us create a `data transfer object` (dto), a list object that would store all three data components in this project. This object (dto) will be the point of departure for all subsequent analytic efforst. 
 
