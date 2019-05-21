@@ -6,7 +6,7 @@ Repository to investigate the effect of banning individuals with felony convicti
 ## Analytic products
 
 - [`./analysis/0-greeter/0-greeter.html` at 2019-05-15][0-greeter-2019-05-15] - documents data import and grooming. (older versions: [2019-05-14][0-greeter-2019-05-14], [2019-04-16][0-greeter-2019-04-16])
-- [`./analysis/1-aggregator/1-aggregator.html` at 2019-05-15][1-aggregator-2019-05-15] 
+- [`./analysis/1-aggregator/1-aggregator.html` at 2019-05-21][1-aggregator-2019-05-21] (Older version: [2019-05-15][1-aggregator-2019-05-15] )
 - [`./analysis/eda-1/eda-1.html` at 2019-05-15][eda-1-2019-05-15] - Exploratory Data Analysis - Take 1. (Older versions: [2019-04-14][1-aggregator-2019-05-15])
 
 
@@ -14,6 +14,9 @@ Repository to investigate the effect of banning individuals with felony convicti
 [0-greeter-2019-05-14]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/ec32529c6c154b63f989c797af30e676e2665993/analysis/0-greeter/0-greeter.html 
 [0-greeter-2019-05-15]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/08782371e90779e3af7e5ac3af8e4f76bae4b2c3/analysis/0-greeter/0-greeter.html 
 [1-aggregator-2019-05-15]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/08782371e90779e3af7e5ac3af8e4f76bae4b2c3/analysis/1-aggregator/1-aggregator.html 
+[1-aggregator-2019-05-21]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/920f2f5489dd640ce0073aff143d7f29b194c438/analysis/1-aggregator/1-aggregator.html 
+
+
 
 [eda-1-2019-05-15]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/08782371e90779e3af7e5ac3af8e4f76bae4b2c3/analysis/eda-1/eda-1.html
 [eda-1-2019-05-14]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/ec32529c6c154b63f989c797af30e676e2665993/analysis/eda-1/eda-1.html
