@@ -1,5 +1,5 @@
 ---
-title: "EDA 1: Basic Questions"
+title: "EDA 2: Aggregation & Pivot "
 output:
   html_document:
     always_allow_html: yes
@@ -52,11 +52,11 @@ read_chunk("./analysis/eda-2/eda-2.R")
 ```
 
 
-# I. Exposition 
+# I. Data 
 
-This report begins analytic inquiry of the data stored in the `data transfer object` (`dto`) prepared by the [`./manipulation/0-greeter.R`][greeter_html_path] script. 
+This report works with data stored in the `data transfer object` (`dto`) prepared by the [`./manipulation/1-aggregator.R`][path_aggregator] script. 
 
-[greeter_html_path]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/master/analysis/0-greeter/0-greeter.html
+[path_aggregator]:https://github.com/dss-hmi/drug-recedivism-2019/blob/master/manipulation/1-aggregator.R
 
 <!-- Load 'sourced' R files.  Suppress the output when loading packages. --> 
 ```{r load-packages, echo=echoChunks, message=FALSE}
@@ -76,7 +76,6 @@ This report begins analytic inquiry of the data stored in the `data transfer obj
 ```{r, echo=echoChunks, message=FALSE}
 ```
 
-## I. Data
 <!-- Load the datasets.   -->
 ```{r load-data, echo=echoChunks, results='show', message=FALSE}
 ```
@@ -85,10 +84,14 @@ This report begins analytic inquiry of the data stored in the `data transfer obj
 ```{r inspect-data, echo=echoChunks, results='show', message=FALSE}
 ```
 
+## `ds` - starting point
 <!-- Tweak the datasets.   -->
-```{r tweak-data, echo=echoChunks, results='show', message=FALSE}
+```{r tweak-1, echo=echoChunks, results='show', message=FALSE}
 ```
 
+## `ds_pivot` - data for pivot
+```{r tweak-2, echo=echoChunks, results='show', message=FALSE}
+```
 
 
 <!-- Basic table view.   -->
@@ -96,7 +99,7 @@ This report begins analytic inquiry of the data stored in the `data transfer obj
 ```
 
 <!-- Basic graph view.   -->
-```{r basic-graph, echo=TRUE, results='show', message=FALSE}
+```{r basic-graph, echo=FALSE, results='show', message=FALSE, eval=FALSE}
 ```
 
 
@@ -104,22 +107,20 @@ This report begins analytic inquiry of the data stored in the `data transfer obj
 ```
 
 
-# II. Development
 
-## 1
 ```{r explore-1, echo=TRUE, results='show', message=FALSE}
 ```
 
-## 2
+
 
 ```{r explore-2, echo=TRUE, results='show', message=FALSE}
 ```
 
-## 3
+
 ```{r explore-3, echo=TRUE, results='show', message=FALSE}
 ```
 
-## 4
+
 ```{r explore-4, echo=TRUE, results='show', message=FALSE}
 ```
 
