@@ -21,7 +21,7 @@ Repository to investigate the effect of banning individuals with felony convicti
 ## Data sources
 
 - [`./data-unshared/raw/inmateDB.xlsx`][inmageDB] - downloaded from https://dcs-inmatesearch.ne.gov/Corrections/COR_input.html  
-- `./data-unshared/raw/2016-03-25 - AllSentences` -  Dataset was provided on March 25, 2016 by the research administrator at the Nebraska Department of Correctional Services Dr. Abby Carbaugh (https://corrections.nebraska.gov/about/staff/abby-carbaugh-phd).  The data set if available upon request.
+- `./data-unshared/raw/2016-03-25 - AllSentences` -  Dataset was provided on March 25, 2016 by the research administrator at the Nebraska Department of Correctional Services Dr. Abby Carbaugh (https://corrections.nebraska.gov/about/staff/abby-carbaugh-phd).  The data set is available upon request.
 
 [inmageDB]:https://dcs-inmatesearch.ne.gov/Corrections/COR_input.html 
 
