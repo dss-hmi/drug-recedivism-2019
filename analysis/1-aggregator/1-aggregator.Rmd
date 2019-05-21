@@ -53,7 +53,7 @@ read_chunk("./manipulation/1-aggregator.R")
 ```
 
 
-This document is the annotation layer to [`./manipulation/1-aggregator.R`][path_aggregator] script, which uses the product of  [`./manipulation/1-greeter.R`][path_greeter] to compute counts of conviction events at different aggregation levels, among which we will  distinquish:
+This document is the annotation layer to [`./manipulation/1-aggregator.R`][path_aggregator] script, which uses the product of  [`./manipulation/0-greeter.R`][path_greeter] to compute counts of conviction events at different aggregation levels, among which we will  distinquish:
 
 |  ds# | group_by  |  label|
 |---|---|---|
@@ -103,11 +103,13 @@ This document is the annotation layer to [`./manipulation/1-aggregator.R`][path_
 
 # IV. Aggregate
 
-## `ds0`
+## `ds0` - starting point
 ```{r agg-0, echo=echoChunks, results='show', message=FALSE}
 ```
 
-Let us define the function that would govern the computation of variables during aggregation
+## What to compute
+
+Let us define the function that would govern the computation of variables during aggregation. 
 ```{r agg-function, echo=echoChunks, results='show', message=FALSE}
 ```
 
