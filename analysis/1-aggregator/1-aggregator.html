@@ -473,7 +473,8 @@ $(document).ready(function () {
 <li><a href="#ii.-input">II. Input</a></li>
 <li><a href="#iii.-groom">III. Groom</a></li>
 <li><a href="#iv.-aggregate">IV. Aggregate</a><ul>
-<li><a href="#ds0"><code>ds0</code></a></li>
+<li><a href="#ds0---starting-point"><code>ds0</code> - starting point</a></li>
+<li><a href="#what-to-compute">What to compute</a></li>
 <li><a href="#ds1"><code>ds1</code></a></li>
 <li><a href="#ds2"><code>ds2</code></a></li>
 <li><a href="#ds3"><code>ds3</code></a></li>
@@ -489,7 +490,7 @@ $(document).ready(function () {
 <!--  Set the working directory to the repository's base directory -->
 <!--  The 2nd mandatory chunck  -->
 <!-- Set the report-wide options, and point to the external code file. -->
-<p>This document is the annotation layer to <a href="https://github.com/dss-hmi/drug-recedivism-2019/blob/master/manipulation/1-aggregator.R"><code>./manipulation/1-aggregator.R</code></a> script, which uses the product of <a href="https://github.com/dss-hmi/drug-recedivism-2019/blob/master/manipulation/0-greeter.R"><code>./manipulation/1-greeter.R</code></a> to compute counts of conviction events at different aggregation levels, among which we will distinquish:</p>
+<p>This document is the annotation layer to <a href="https://github.com/dss-hmi/drug-recedivism-2019/blob/master/manipulation/1-aggregator.R"><code>./manipulation/1-aggregator.R</code></a> script, which uses the product of <a href="https://github.com/dss-hmi/drug-recedivism-2019/blob/master/manipulation/0-greeter.R"><code>./manipulation/0-greeter.R</code></a> to compute counts of conviction events at different aggregation levels, among which we will distinquish:</p>
 <table>
 <colgroup>
 <col width="33%"></col>
@@ -573,20 +574,20 @@ $(document).ready(function () {
 <a class="sourceLine" id="cb9-7" title="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="kw">c</span>(</a>
 <a class="sourceLine" id="cb9-8" title="8">    <span class="st">&quot;person_id&quot;</span>          <span class="co"># idnumbercomb, manually checked to represent a unique person </span></a>
 <a class="sourceLine" id="cb9-9" title="9">    ,<span class="st">&quot;begin_date&quot;</span>        <span class="co"># date the person began serving the aggregate sentence</span></a>
-<a class="sourceLine" id="cb9-10" title="10">    ,<span class="st">&quot;offense_group&quot;</span>     <span class="co"># one-letter code (we need &quot;C&quot; - drug-related fellonies)</span></a>
-<a class="sourceLine" id="cb9-11" title="11">    ,<span class="st">&quot;offense_arrest_cd&quot;</span> <span class="co"># code for the offense committed   </span></a>
+<a class="sourceLine" id="cb9-10" title="10">    ,<span class="st">&quot;offense_arrest_cd&quot;</span> <span class="co"># code for the offense committed   </span></a>
+<a class="sourceLine" id="cb9-11" title="11">    ,<span class="st">&quot;offense_group&quot;</span>     <span class="co"># one-letter code (we need &quot;C&quot; - drug-related fellonies)</span></a>
 <a class="sourceLine" id="cb9-12" title="12">    ,<span class="st">&quot;offense_count&quot;</span>     <span class="co"># count of offenses in inmate&#39;s sentence</span></a>
 <a class="sourceLine" id="cb9-13" title="13">    ,<span class="st">&quot;offense_arrest&quot;</span>    <span class="co"># standardized description of the offense committed</span></a>
 <a class="sourceLine" id="cb9-14" title="14">  ))</a>
-<a class="sourceLine" id="cb9-15" title="15">ds <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">glimpse</span>(<span class="dv">50</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb9-15" title="15">ds <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">glimpse</span>(<span class="dv">100</span>)</a></code></pre></div>
 <pre><code>Observations: 120,381
 Variables: 6
-$ person_id         &lt;dbl&gt; 1, 1, 2, 2, 3, 5, 6...
-$ begin_date        &lt;date&gt; 1974-09-24, 1974-0...
-$ offense_group     &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;D&quot;, &quot;D&quot;,...
-$ offense_arrest_cd &lt;chr&gt; &quot;E01&quot;, &quot;E01&quot;, &quot;D21&quot;...
-$ offense_count     &lt;dbl&gt; 1, 2, 1, 2, 1, 1, 1...
-$ offense_arrest    &lt;chr&gt; &quot;FORGERY 1ST DEGREE...</code></pre>
+$ person_id         &lt;dbl&gt; 1, 1, 2, 2, 3, 5, 6, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 10, 10, 11, 11, 11...
+$ begin_date        &lt;date&gt; 1974-09-24, 1974-09-24, 1975-01-17, 1975-01-17, 1975-01-08, 1976-10-...
+$ offense_arrest_cd &lt;chr&gt; &quot;E01&quot;, &quot;E01&quot;, &quot;D21&quot;, &quot;D21&quot;, &quot;B41&quot;, &quot;D21&quot;, &quot;D11&quot;, &quot;E01&quot;, &quot;B11&quot;, &quot;B31&quot;,...
+$ offense_group     &lt;chr&gt; &quot;E&quot;, &quot;E&quot;, &quot;D&quot;, &quot;D&quot;, &quot;B&quot;, &quot;D&quot;, &quot;D&quot;, &quot;E&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;H&quot;,...
+$ offense_count     &lt;dbl&gt; 1, 2, 1, 2, 1, 1, 1, 1, 4, 2, 1, 3, 6, 5, 1, 2, 3, 1, 2, 2, 3, 1, 1, ...
+$ offense_arrest    &lt;chr&gt; &quot;FORGERY 1ST DEGREE&quot;, &quot;FORGERY 1ST DEGREE&quot;, &quot;THEFT&quot;, &quot;THEFT&quot;, &quot;ROBBER...</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># view the contents of the codebook for these variables</span></a>
 <a class="sourceLine" id="cb11-2" title="2">ds_codebook <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(field_name <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(</a>
@@ -625,8 +626,8 @@ $ offense_arrest    &lt;chr&gt; &quot;FORGERY 1ST DEGREE...</code></pre>
 </div>
 <div id="iv.-aggregate" class="section level1">
 <h1>IV. Aggregate</h1>
-<div id="ds0" class="section level2">
-<h2><code>ds0</code></h2>
+<div id="ds0---starting-point" class="section level2">
+<h2><code>ds0</code> - starting point</h2>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co"># We will distinguish the following levels of aggregation :</span></a>
 <a class="sourceLine" id="cb12-2" title="2"></a>
 <a class="sourceLine" id="cb12-3" title="3"><span class="co"># (4) person_id                                  # person     level</span></a>
@@ -646,17 +647,20 @@ $ offense_arrest    &lt;chr&gt; &quot;FORGERY 1ST DEGREE...</code></pre>
 <a class="sourceLine" id="cb12-17" title="17">    <span class="dt">conviction_order     =</span> dplyr<span class="op">::</span><span class="kw">row_number</span>() <span class="co"># sequential order of convictions</span></a>
 <a class="sourceLine" id="cb12-18" title="18">    ,<span class="dt">total_n_convictions =</span> dplyr<span class="op">::</span><span class="kw">n</span>() <span class="co"># total number of convictions a person has</span></a>
 <a class="sourceLine" id="cb12-19" title="19">  ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-20" title="20"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(</a>
-<a class="sourceLine" id="cb12-21" title="21">    <span class="dt">drug_related         =</span> <span class="kw">ifelse</span>(offense_group <span class="op">==</span><span class="st"> &quot;C&quot;</span>, <span class="ot">TRUE</span>, <span class="ot">NA</span>)     </a>
-<a class="sourceLine" id="cb12-22" title="22">    ,<span class="dt">drug_order          =</span> <span class="kw">cumsum</span>(<span class="op">!</span><span class="kw">is.na</span>(drug_related))               </a>
-<a class="sourceLine" id="cb12-23" title="23">    ,<span class="dt">drug_order          =</span> <span class="kw">ifelse</span>(<span class="kw">is.na</span>(drug_related), <span class="ot">NA</span>, drug_order)</a>
-<a class="sourceLine" id="cb12-24" title="24">    ,<span class="dt">after_1996          =</span> <span class="kw">ifelse</span>(begin_date <span class="op">&gt;</span><span class="st"> &quot;1996-01-01&quot;</span>, <span class="ot">TRUE</span>, <span class="ot">NA</span>)</a>
-<a class="sourceLine" id="cb12-25" title="25">    ,<span class="dt">days_since_previous =</span> begin_date <span class="op">-</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">lag</span>(begin_date,<span class="dv">1</span>)      </a>
-<a class="sourceLine" id="cb12-26" title="26">  )</a>
-<a class="sourceLine" id="cb12-27" title="27"><span class="co"># let us examine the data for three individuals</span></a>
-<a class="sourceLine" id="cb12-28" title="28">ds0 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-29" title="29"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(person_id <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">46222</span>,<span class="dv">65392</span>, <span class="dv">50495</span>) ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-30" title="30"><span class="st">  </span><span class="kw">neat</span>(<span class="dt">caption =</span> <span class="st">&quot;Grouped by : (PERSON) - (DATE) - (OFFENSE ARREST CODE)&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb12-20" title="20"><span class="st">  </span><span class="co"># additional measures, computed within a person </span></a>
+<a class="sourceLine" id="cb12-21" title="21"><span class="st">  </span><span class="co"># note that we are NOT collapsing/aggregating</span></a>
+<a class="sourceLine" id="cb12-22" title="22"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>( <span class="co"># `mutate` NOT `summarize`, same N of rows </span></a>
+<a class="sourceLine" id="cb12-23" title="23">    <span class="dt">drug_related         =</span> <span class="kw">ifelse</span>(offense_group <span class="op">==</span><span class="st"> &quot;C&quot;</span>, <span class="ot">TRUE</span>, <span class="ot">NA</span>)     </a>
+<a class="sourceLine" id="cb12-24" title="24">    ,<span class="dt">drug_order          =</span> <span class="kw">cumsum</span>(<span class="op">!</span><span class="kw">is.na</span>(drug_related))               </a>
+<a class="sourceLine" id="cb12-25" title="25">    ,<span class="dt">drug_order          =</span> <span class="kw">ifelse</span>(<span class="kw">is.na</span>(drug_related), <span class="ot">NA</span>, drug_order)</a>
+<a class="sourceLine" id="cb12-26" title="26">    ,<span class="dt">after_1996          =</span> <span class="kw">ifelse</span>(begin_date <span class="op">&gt;</span><span class="st"> &quot;1996-01-01&quot;</span>, <span class="ot">TRUE</span>, <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb12-27" title="27">    ,<span class="dt">days_since_previous =</span> begin_date <span class="op">-</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">lag</span>(begin_date,<span class="dv">1</span>)      </a>
+<a class="sourceLine" id="cb12-28" title="28">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-29" title="29"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>()</a>
+<a class="sourceLine" id="cb12-30" title="30"><span class="co"># let us examine the data for three individuals</span></a>
+<a class="sourceLine" id="cb12-31" title="31">ds0 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-32" title="32"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(person_id <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">46222</span>,<span class="dv">65392</span>, <span class="dv">50495</span>) ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-33" title="33"><span class="st">  </span><span class="kw">neat</span>(<span class="dt">caption =</span> <span class="st">&quot;Grouped by : (PERSON) - (DATE) - (OFFENSE ARREST CODE)&quot;</span>)</a></code></pre></div>
 <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; ">
 <caption>
 Grouped by : (PERSON) - (DATE) - (OFFENSE ARREST CODE)
@@ -670,10 +674,10 @@ person_id
 begin_date
 </th>
 <th style="text-align:left;">
-offense_group
+offense_arrest_cd
 </th>
 <th style="text-align:left;">
-offense_arrest_cd
+offense_group
 </th>
 <th style="text-align:right;">
 offense_count
@@ -710,10 +714,10 @@ days_since_previous
 1994-11-17
 </td>
 <td style="text-align:left;">
-D
+D11
 </td>
 <td style="text-align:left;">
-D11
+D
 </td>
 <td style="text-align:right;">
 1
@@ -748,10 +752,10 @@ NA
 1994-11-17
 </td>
 <td style="text-align:left;">
-D
+D11
 </td>
 <td style="text-align:left;">
-D11
+D
 </td>
 <td style="text-align:right;">
 1
@@ -786,10 +790,10 @@ NA
 1994-11-17
 </td>
 <td style="text-align:left;">
-D
+D31
 </td>
 <td style="text-align:left;">
-D31
+D
 </td>
 <td style="text-align:right;">
 2
@@ -824,10 +828,10 @@ NA
 2007-08-06
 </td>
 <td style="text-align:left;">
-B
+B35
 </td>
 <td style="text-align:left;">
-B35
+B
 </td>
 <td style="text-align:right;">
 2
@@ -862,10 +866,10 @@ TRUE
 2007-08-06
 </td>
 <td style="text-align:left;">
-C
+C21
 </td>
 <td style="text-align:left;">
-C21
+C
 </td>
 <td style="text-align:right;">
 1
@@ -900,10 +904,10 @@ TRUE
 2007-08-06
 </td>
 <td style="text-align:left;">
-L
+L22
 </td>
 <td style="text-align:left;">
-L22
+L
 </td>
 <td style="text-align:right;">
 1
@@ -938,10 +942,10 @@ TRUE
 2012-08-20
 </td>
 <td style="text-align:left;">
-C
+C21
 </td>
 <td style="text-align:left;">
-C21
+C
 </td>
 <td style="text-align:right;">
 1
@@ -976,10 +980,10 @@ TRUE
 2012-08-20
 </td>
 <td style="text-align:left;">
-C
+C21
 </td>
 <td style="text-align:left;">
-C21
+C
 </td>
 <td style="text-align:right;">
 1
@@ -1014,10 +1018,10 @@ TRUE
 2012-08-20
 </td>
 <td style="text-align:left;">
-K
+K01
 </td>
 <td style="text-align:left;">
-K01
+K
 </td>
 <td style="text-align:right;">
 1
@@ -1052,10 +1056,10 @@ TRUE
 1998-01-07
 </td>
 <td style="text-align:left;">
-D
+D12
 </td>
 <td style="text-align:left;">
-D12
+D
 </td>
 <td style="text-align:right;">
 1
@@ -1090,10 +1094,10 @@ NA
 2004-04-06
 </td>
 <td style="text-align:left;">
-D
+D41
 </td>
 <td style="text-align:left;">
-D41
+D
 </td>
 <td style="text-align:right;">
 1
@@ -1128,10 +1132,10 @@ TRUE
 2007-05-04
 </td>
 <td style="text-align:left;">
-D
+D11
 </td>
 <td style="text-align:left;">
-D11
+D
 </td>
 <td style="text-align:right;">
 1
@@ -1166,10 +1170,10 @@ TRUE
 2007-05-04
 </td>
 <td style="text-align:left;">
-D
+D20
 </td>
 <td style="text-align:left;">
-D20
+D
 </td>
 <td style="text-align:right;">
 2
@@ -1204,10 +1208,10 @@ TRUE
 2007-05-04
 </td>
 <td style="text-align:left;">
-D
+D20
 </td>
 <td style="text-align:left;">
-D20
+D
 </td>
 <td style="text-align:right;">
 3
@@ -1242,10 +1246,10 @@ TRUE
 2007-01-25
 </td>
 <td style="text-align:left;">
-C
+C21
 </td>
 <td style="text-align:left;">
-C21
+C
 </td>
 <td style="text-align:right;">
 1
@@ -1280,10 +1284,10 @@ NA
 2007-01-25
 </td>
 <td style="text-align:left;">
-D
+D11
 </td>
 <td style="text-align:left;">
-D11
+D
 </td>
 <td style="text-align:right;">
 1
@@ -1318,10 +1322,10 @@ TRUE
 2007-01-25
 </td>
 <td style="text-align:left;">
-D
+D20
 </td>
 <td style="text-align:left;">
-D20
+D
 </td>
 <td style="text-align:right;">
 1
@@ -1356,10 +1360,10 @@ TRUE
 2010-06-11
 </td>
 <td style="text-align:left;">
-C
+C21
 </td>
 <td style="text-align:left;">
-C21
+C
 </td>
 <td style="text-align:right;">
 1
@@ -1394,10 +1398,10 @@ TRUE
 2010-06-11
 </td>
 <td style="text-align:left;">
-D
+D11
 </td>
 <td style="text-align:left;">
-D11
+D
 </td>
 <td style="text-align:right;">
 1
@@ -1432,10 +1436,10 @@ TRUE
 2014-05-21
 </td>
 <td style="text-align:left;">
-D
+D43
 </td>
 <td style="text-align:left;">
-D43
+D
 </td>
 <td style="text-align:right;">
 1
@@ -1464,8 +1468,11 @@ TRUE
 </tr>
 </tbody>
 </table>
-<p>Let us define the function that would govern the computation of variables during aggregation</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># let us define the function to be applied at every aggregation level</span></a>
+</div>
+<div id="what-to-compute" class="section level2">
+<h2>What to compute</h2>
+<p>Let us define the function that would govern the computation of variables during aggregation.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># this function will be applied at every aggregation level</span></a>
 <a class="sourceLine" id="cb13-2" title="2">aggregate_by_groups &lt;-<span class="st"> </span><span class="cf">function</span>(d){</a>
 <a class="sourceLine" id="cb13-3" title="3">  d_aggregate &lt;-<span class="st"> </span>d <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb13-4" title="4"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarize</span>(</a>
@@ -2477,7 +2484,7 @@ n_drug_related_after_1996
 <a class="sourceLine" id="cb18-6" title="6">  ,<span class="st">&quot;person_date_offense_cd&quot;</span> =<span class="st"> </span>ds0</a>
 <a class="sourceLine" id="cb18-7" title="7">)</a>
 <a class="sourceLine" id="cb18-8" title="8">dto <span class="op">%&gt;%</span><span class="st"> </span>pryr<span class="op">::</span><span class="kw">object_size</span>()</a></code></pre></div>
-<pre><code>25.1 MB</code></pre>
+<pre><code>21.1 MB</code></pre>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">dto <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">saveRDS</span>(<span class="st">&quot;./data-unshared/derived/1-dto.rds&quot;</span>) <span class="co"># for piping further</span></a></code></pre></div>
 </div>
 <div id="session-info" class="section level1">
@@ -2495,24 +2502,21 @@ n_drug_related_after_1996
  collate  English_United States.1252  
  ctype    English_United States.1252  
  tz       America/Los_Angeles         
- date     2019-05-15                  
+ date     2019-05-21                  
 
 - Packages -----------------------------------------------------------------------------------------------------------
  package     * version date       lib source        
  assertthat    0.2.1   2019-03-21 [1] CRAN (R 3.5.3)
  backports     1.1.4   2019-04-10 [1] CRAN (R 3.5.3)
  callr         3.2.0   2019-03-15 [1] CRAN (R 3.5.3)
- cellranger    1.1.0   2016-07-27 [1] CRAN (R 3.5.3)
  cli           1.1.0   2019-03-19 [1] CRAN (R 3.5.3)
  codetools     0.2-15  2016-10-05 [2] CRAN (R 3.5.2)
  colorspace    1.4-1   2019-03-18 [1] CRAN (R 3.5.3)
  crayon        1.3.4   2017-09-16 [1] CRAN (R 3.5.3)
- crosstalk     1.0.0   2016-12-21 [1] CRAN (R 3.5.3)
  desc          1.2.0   2018-05-01 [1] CRAN (R 3.5.3)
  devtools      2.0.2   2019-04-08 [1] CRAN (R 3.5.3)
  digest        0.6.18  2018-10-10 [1] CRAN (R 3.5.3)
  dplyr         0.8.0.1 2019-02-15 [1] CRAN (R 3.5.3)
- DT            0.6     2019-05-09 [1] CRAN (R 3.5.3)
  evaluate      0.13    2019-02-12 [1] CRAN (R 3.5.3)
  fansi         0.4.0   2018-10-05 [1] CRAN (R 3.5.3)
  fs            1.3.1   2019-05-06 [1] CRAN (R 3.5.3)
@@ -2523,19 +2527,13 @@ n_drug_related_after_1996
  highr         0.8     2019-03-20 [1] CRAN (R 3.5.3)
  hms           0.4.2   2018-03-10 [1] CRAN (R 3.5.3)
  htmltools     0.3.6   2017-04-28 [1] CRAN (R 3.5.3)
- htmlwidgets   1.3     2018-09-30 [1] CRAN (R 3.5.3)
- httpuv        1.5.1   2019-04-05 [1] CRAN (R 3.5.3)
  httr          1.4.0   2018-12-11 [1] CRAN (R 3.5.3)
- jsonlite      1.6     2018-12-07 [1] CRAN (R 3.5.3)
  kableExtra    1.1.0   2019-03-16 [1] CRAN (R 3.5.3)
- knitr       * 1.22    2019-03-08 [1] CRAN (R 3.5.3)
- labeling      0.3     2014-08-23 [1] CRAN (R 3.5.2)
- later         0.8.0   2019-02-11 [1] CRAN (R 3.5.3)
+ knitr       * 1.23    2019-05-18 [1] CRAN (R 3.5.2)
  lazyeval      0.2.2   2019-03-15 [1] CRAN (R 3.5.3)
  lubridate     1.7.4   2018-04-11 [1] CRAN (R 3.5.3)
  magrittr    * 1.5     2014-11-22 [1] CRAN (R 3.5.3)
  memoise       1.1.0   2017-04-21 [1] CRAN (R 3.5.3)
- mime          0.6     2018-10-05 [1] CRAN (R 3.5.2)
  munsell       0.5.0   2018-06-12 [1] CRAN (R 3.5.3)
  pillar        1.3.1   2018-12-15 [1] CRAN (R 3.5.3)
  pkgbuild      1.0.3   2019-03-20 [1] CRAN (R 3.5.3)
@@ -2544,14 +2542,12 @@ n_drug_related_after_1996
  plyr          1.8.4   2016-06-08 [1] CRAN (R 3.5.3)
  prettyunits   1.0.2   2015-07-13 [1] CRAN (R 3.5.3)
  processx      3.3.1   2019-05-08 [1] CRAN (R 3.5.2)
- promises      1.0.1   2018-04-13 [1] CRAN (R 3.5.3)
  pryr          0.1.4   2018-02-18 [1] CRAN (R 3.5.3)
  ps            1.3.0   2018-12-21 [1] CRAN (R 3.5.3)
  purrr         0.3.2   2019-03-15 [1] CRAN (R 3.5.3)
  R6            2.4.0   2019-02-14 [1] CRAN (R 3.5.3)
  Rcpp          1.0.1   2019-03-17 [1] CRAN (R 3.5.3)
  readr         1.3.1   2018-12-21 [1] CRAN (R 3.5.3)
- readxl        1.3.1   2019-03-13 [1] CRAN (R 3.5.3)
  remotes       2.0.4   2019-04-10 [1] CRAN (R 3.5.3)
  rlang         0.3.4   2019-04-07 [1] CRAN (R 3.5.3)
  rmarkdown     1.12    2019-03-14 [1] CRAN (R 3.5.3)
@@ -2560,7 +2556,6 @@ n_drug_related_after_1996
  rvest         0.3.3   2019-04-11 [1] CRAN (R 3.5.3)
  scales        1.0.0   2018-08-09 [1] CRAN (R 3.5.3)
  sessioninfo   1.1.1   2018-11-05 [1] CRAN (R 3.5.3)
- shiny         1.3.2   2019-04-22 [1] CRAN (R 3.5.2)
  stringi       1.4.3   2019-03-12 [1] CRAN (R 3.5.3)
  stringr       1.4.0   2019-02-10 [1] CRAN (R 3.5.3)
  tibble        2.1.1   2019-03-16 [1] CRAN (R 3.5.3)
@@ -2570,15 +2565,14 @@ n_drug_related_after_1996
  viridisLite   0.3.0   2018-02-01 [1] CRAN (R 3.5.3)
  webshot       0.5.1   2018-09-28 [1] CRAN (R 3.5.3)
  withr         2.1.2   2018-03-15 [1] CRAN (R 3.5.3)
- xfun          0.6     2019-04-02 [1] CRAN (R 3.5.3)
+ xfun          0.7     2019-05-14 [1] CRAN (R 3.5.3)
  xml2          1.2.0   2018-01-24 [1] CRAN (R 3.5.3)
- xtable        1.8-4   2019-04-21 [1] CRAN (R 3.5.3)
  yaml          2.2.0   2018-07-25 [1] CRAN (R 3.5.2)
 
 [1] C:/Users/an499583/Documents/R/win-library/3.5
 [2] C:/Program Files/R/R-3.5.2/library</code></pre>
 </details>
-<p>Report rendered by an499583 at 2019-05-15, 17:02 -0700 in 26 seconds.</p>
+<p>Report rendered by an499583 at 2019-05-21, 10:24 -0700 in 29 seconds.</p>
 </div>
 
 
