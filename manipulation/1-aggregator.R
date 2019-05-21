@@ -65,12 +65,12 @@ ds <- ds %>%
   dplyr::select(c(
     "person_id"          # idnumbercomb, manually checked to represent a unique person 
     ,"begin_date"        # date the person began serving the aggregate sentence
-    ,"offense_group"     # one-letter code (we need "C" - drug-related fellonies)
     ,"offense_arrest_cd" # code for the offense committed   
+    ,"offense_group"     # one-letter code (we need "C" - drug-related fellonies)
     ,"offense_count"     # count of offenses in inmate's sentence
     ,"offense_arrest"    # standardized description of the offense committed
   ))
-ds %>% dplyr::glimpse(50)
+ds %>% dplyr::glimpse(100)
 
 # view the contents of the codebook for these variables
 ds_codebook %>% 
@@ -102,20 +102,23 @@ ds0 <- ds %>%
     conviction_order     = dplyr::row_number() # sequential order of convictions
     ,total_n_convictions = dplyr::n() # total number of convictions a person has
   ) %>%
-  dplyr::mutate(
+  # additional measures, computed within a person 
+  # note that we are NOT collapsing/aggregating
+  dplyr::mutate( # `mutate` NOT `summarize`, same N of rows 
     drug_related         = ifelse(offense_group == "C", TRUE, NA)     
     ,drug_order          = cumsum(!is.na(drug_related))               
     ,drug_order          = ifelse(is.na(drug_related), NA, drug_order)
     ,after_1996          = ifelse(begin_date > "1996-01-01", TRUE, NA)
     ,days_since_previous = begin_date - dplyr::lag(begin_date,1)      
-  )
+  ) %>% 
+  dplyr::ungroup()
 # let us examine the data for three individuals
 ds0 %>% 
   dplyr::filter(person_id %in% c(46222,65392, 50495) ) %>% 
   neat(caption = "Grouped by : (PERSON) - (DATE) - (OFFENSE ARREST CODE)")
 
 # ----- agg-function ---------------------------------------------
-# let us define the function to be applied at every aggregation level
+# this function will be applied at every aggregation level
 aggregate_by_groups <- function(d){
   d_aggregate <- d %>% 
     dplyr::summarize(
