@@ -9,10 +9,10 @@ Repository to investigate the effect of banning individuals with felony convicti
 - [`./analysis/1-aggregator/1-aggregator.html` at 2019-05-21][1-aggregator-2019-05-21] (Older version: [2019-05-15][1-aggregator-2019-05-15] )
 - [`./analysis/eda-1/eda-1.html` at 2019-05-15][eda-1-2019-05-15] - Exploratory Data Analysis - Take 1. (Older versions: [2019-04-14][1-aggregator-2019-05-15])
 - [`./analysis/eda-2/eda-2-offense-groups.html`][eda-2-2019-06-04] - A pivot tool for initial exploration. Contains person-level indiator of cumulative drug conviction history : 
- - ( `before_1996`) - Persons with drug convictions ONLY before 1996 
- - (`after_1996`) - Persons with drug convictions ONLY after 1996 
- - (`before_after`) - Persons with drug convictions with convictions BOTH before and after 1996 
- - (`never`) - Persons with no drug convictions ever  
+  - (`before_1996`) - Persons with drug convictions ONLY before 1996 
+  - (`after_1996`) - Persons with drug convictions ONLY after 1996 
+  - (`before_after`) - Persons with drug convictions with convictions BOTH before and after 1996 
+  - (`never`) - Persons with no drug convictions ever  
 
 
 [0-greeter-2019-04-16]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/2c5f0991bb3d9afd7e26877292e3ccc416215c46/analysis/0-greeter/0-greeter.html
