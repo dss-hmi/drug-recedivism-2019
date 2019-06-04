@@ -77,6 +77,8 @@ read_chunk("./analysis/eda-2/eda-2.R")
 ```{r inspect-data, echo=echoChunks, results = resultsChunk, message=FALSE, warning = warningChunk}
 ```
 
+```{r custom-functions, echo=echoChunks, results = resultsChunk, message=FALSE, warning = warningChunk}
+```
 
 
 ```{r tweak-1, echo=echoChunks, results = resultsChunk, message=FALSE, warning = warningChunk}

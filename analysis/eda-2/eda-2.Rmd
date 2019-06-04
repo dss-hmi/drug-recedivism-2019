@@ -9,9 +9,6 @@ output:
     theme: spacelab
     toc: yes
     toc_float: yes
-  pdf_document: 
-    highlight: pygments
-    toc: yes
 ---
 
 <!-- These two chunks should be added in the beginning of every .Rmd that you want to source an .R script -->
@@ -84,6 +81,9 @@ This report works with data stored in the `data transfer object` (`dto`) prepare
 ```{r inspect-data, echo=echoChunks, results='show', message=FALSE}
 ```
 
+```{r custom-functions, echo=echoChunks, results='show', message=FALSE}
+```
+
 ## `ds` - starting point
 <!-- Tweak the datasets.   -->
 ```{r tweak-1, echo=echoChunks, results='show', message=FALSE}
@@ -106,23 +106,6 @@ This report works with data stored in the `data transfer object` (`dto`) prepare
 ```{r save-to-disk, echo=TRUE, results='show', message=FALSE}
 ```
 
-
-
-```{r explore-1, echo=TRUE, results='show', message=FALSE}
-```
-
-
-
-```{r explore-2, echo=TRUE, results='show', message=FALSE}
-```
-
-
-```{r explore-3, echo=TRUE, results='show', message=FALSE}
-```
-
-
-```{r explore-4, echo=TRUE, results='show', message=FALSE}
-```
 
 
 
