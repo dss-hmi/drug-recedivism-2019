@@ -8,6 +8,11 @@ Repository to investigate the effect of banning individuals with felony convicti
 - [`./analysis/0-greeter/0-greeter.html` at 2019-05-15][0-greeter-2019-05-15] - documents data import and grooming. (older versions: [2019-05-14][0-greeter-2019-05-14], [2019-04-16][0-greeter-2019-04-16])
 - [`./analysis/1-aggregator/1-aggregator.html` at 2019-05-21][1-aggregator-2019-05-21] (Older version: [2019-05-15][1-aggregator-2019-05-15] )
 - [`./analysis/eda-1/eda-1.html` at 2019-05-15][eda-1-2019-05-15] - Exploratory Data Analysis - Take 1. (Older versions: [2019-04-14][1-aggregator-2019-05-15])
+- [`./analysis/eda-2/eda-2-offense-groups.html`][eda-2-2019-06-04] - A pivot tool for initial exploration. Contains person-level indiator of cumulative drug conviction history : 
+  - (`before_1996`) - Persons with drug convictions ONLY before 1996 
+  - (`after_1996`) - Persons with drug convictions ONLY after 1996 
+  - (`before_after`) - Persons with drug convictions BOTH before and after 1996 
+  - (`never`) - Persons with no drug convictions ever  
 
 
 [0-greeter-2019-04-16]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/2c5f0991bb3d9afd7e26877292e3ccc416215c46/analysis/0-greeter/0-greeter.html
@@ -16,7 +21,7 @@ Repository to investigate the effect of banning individuals with felony convicti
 [1-aggregator-2019-05-15]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/08782371e90779e3af7e5ac3af8e4f76bae4b2c3/analysis/1-aggregator/1-aggregator.html 
 [1-aggregator-2019-05-21]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/920f2f5489dd640ce0073aff143d7f29b194c438/analysis/1-aggregator/1-aggregator.html 
 
-
+[eda-2-2019-06-04]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/9c213af9547380d0777325e37b0a92f2e3132a03/analysis/eda-2/eda-2-offense-groups.html
 
 [eda-1-2019-05-15]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/08782371e90779e3af7e5ac3af8e4f76bae4b2c3/analysis/eda-1/eda-1.html
 [eda-1-2019-05-14]:https://raw.githack.com/dss-hmi/drug-recedivism-2019/ec32529c6c154b63f989c797af30e676e2665993/analysis/eda-1/eda-1.html
