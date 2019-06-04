@@ -11,7 +11,7 @@ Repository to investigate the effect of banning individuals with felony convicti
 - [`./analysis/eda-2/eda-2-offense-groups.html`][eda-2-2019-06-04] - A pivot tool for initial exploration. Contains person-level indiator of cumulative drug conviction history : 
   - (`before_1996`) - Persons with drug convictions ONLY before 1996 
   - (`after_1996`) - Persons with drug convictions ONLY after 1996 
-  - (`before_after`) - Persons with drug convictions with convictions BOTH before and after 1996 
+  - (`before_after`) - Persons with drug convictions BOTH before and after 1996 
   - (`never`) - Persons with no drug convictions ever  
 
 
