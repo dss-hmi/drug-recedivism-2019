@@ -105,10 +105,10 @@ ds0 <- ds %>%
   # additional measures, computed within a person 
   # note that we are NOT collapsing/aggregating
   dplyr::mutate( # `mutate` NOT `summarize`, same N of rows 
-    drug_related         = ifelse(offense_group == "C", TRUE, NA)     
+    drug_related         = ifelse(offense_group == "C", TRUE, FALSE)     
     ,drug_order          = cumsum(!is.na(drug_related))               
     ,drug_order          = ifelse(is.na(drug_related), NA, drug_order)
-    ,after_1996          = ifelse(begin_date > "1996-01-01", TRUE, NA)
+    ,after_1996          = ifelse(begin_date > "1996-01-01", TRUE, FALSE)
     ,days_since_previous = begin_date - dplyr::lag(begin_date,1)      
   ) %>% 
   dplyr::ungroup()
