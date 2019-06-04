@@ -28,8 +28,8 @@ dto <- readRDS(path_file_input_dto)
 dto %>% pryr::object_size(); dto %>% class(); dto %>% names()
 
 # assign aliases for this report
-ds          <- dto$person_date_offense
-ds %>% dplyr::glimpse(100)
+# ds          <- dto$person_date_offense
+# ds %>% dplyr::glimpse(100)
 # ----- custom-functions --------------------------------------
 get_a_sample <- function(
   d,
@@ -72,8 +72,82 @@ aggregate_by_groups <- function(d){
 #   dplyr::group_by(person_id, offense_arrest_cd) %>% 
 #   aggregate_by_groups()
 
+
+# ----- groups-of-offenses ---------------------------------
+
+ds_offenses <- dto$person_date_offense_cd %>% 
+  # compute person indicators
+  # dplyr::filter(person_id %in% c(46222,65392, 50495,2381) ) %>% # for testing
+  dplyr::mutate(
+    drug_related_after_1996 = drug_related * after_1996
+    ,drug_related_before_1996 = drug_related * !after_1996
+    
+  ) %>% 
+  # compute person-level indicators of cummulative conviction history
+  dplyr::group_by(person_id) %>% 
+  dplyr::mutate(
+    drug_before_1996   = ifelse(  sum(drug_related_before_1996)>0L & !sum(drug_related_after_1996>0L), TRUE, FALSE)
+    ,drug_after_1996   = ifelse( !sum(drug_related_before_1996)>0L &  sum(drug_related_after_1996>0L), TRUE, FALSE)
+    ,drug_before_after = ifelse(  sum(drug_related_before_1996)>0L &  sum(drug_related_after_1996>0L), TRUE, FALSE)
+    ,drug_never        = ifelse( !sum(drug_related_before_1996)>0L & !sum(drug_related_after_1996>0L), TRUE, FALSE)
+  ) %>% 
+  # dplyr::select(
+  #   person_id, begin_date, offense_arrest_cd 
+  #   # conviction level
+  #   # drug_related
+  #   # ,after_1996 
+  #   # ,drug_related_after_1996
+  #   # ,drug_related_before_1996
+  #   # person level
+  #   ,drug_before_1996  
+  #   ,drug_after_1996  
+  #   ,drug_before_after
+  #   ,drug_never       
+  # ) %>% 
+   dplyr::ungroup() %>% 
+  # dplyr::mutate(check = sum(drug_never, drug_before_1996, drug_after_1996, drug_before_after,drug_never)) %>%
+  # dplyr::group_by(check) %>% dplyr::summarize(n = dplyr::n_distinct(check))
+  tidyr::gather("drug_conviction_history","value", drug_before_1996, drug_after_1996, drug_before_after, drug_never) %>% 
+  dplyr::mutate(
+    drug_conviction_history = gsub("^drug_","", drug_conviction_history)
+  ) %>% 
+  dplyr::filter(value) %>% 
+  dplyr::select(-value)
+
+ds_offenses <- ds_offenses %>% 
+  # to count unique convictions 
+  dplyr::group_by(drug_conviction_history, person_id, begin_date, offense_group, offense_arrest_cd, offense_arrest) %>% 
+  dplyr::summarize(
+    n_convictions     = dplyr::n()
+    ,n_offense_counts = sum(offense_count)
+  ) %>% 
+  dplyr::ungroup() %>% 
+  # to aggregate across years
+  dplyr::mutate(
+    year = lubridate::year(begin_date)
+  ) %>% 
+  dplyr::group_by(drug_conviction_history, year, offense_group, offense_arrest_cd, offense_arrest) %>% 
+  dplyr::summarize(
+    n_convictions = sum(n_convictions)
+    ,n_offense_counts = sum(n_offense_counts)
+  ) %>% 
+  dplyr::filter(year %in% 1970:2016) %>% 
+  dplyr::arrange()
+
+ds_offenses %>% 
+  rpivotTable::rpivotTable(
+    rows = c("offense_group")
+    , cols = c("year")
+    , vals = "n_convictions"
+    , aggregatorName = "Integer Sum"
+    , rendererName = "Line Chart"
+    # , width="100%"
+    # , height="400px"
+  )
+
+
 # ---- tweak-1 ---------------------------------------------------------------
-ds <- ds %>% 
+ds <- dto$person_date_offense %>% 
   # dplyr::filter(person_id %in% c(46222,65392, 50495) ) %>% # for testing
   dplyr::group_by(person_id) %>% 
   dplyr::mutate(
@@ -87,7 +161,7 @@ ds %>%
   neat() 
 
 # ---- tweak-2 ---------------------------------------------------------------
-# let us aggregate ove (YEAR) and (OFFENSE GROUP)
+# let us aggregate over (YEAR) and (OFFENSE GROUP)
 ds_pivot <- dto$person_date_offense_cd %>% 
   # dplyr::filter(person_id %in% c(46222,65392, 50495) ) %>% # for testing
   dplyr::mutate(
@@ -104,24 +178,25 @@ ds_pivot <- dto$person_date_offense_cd %>%
     ,drug_before_1996 = ifelse( (drug_ever==TRUE & drug_after_1996==FALSE), TRUE, FALSE )
   ) %>% 
   dplyr::ungroup() %>% 
-  dplyr::group_by(year, offense_group) %>% 
+  dplyr::group_by(year, offense_group, drug_after_1996) %>% 
   dplyr::summarize(
-    n_offense_counts           = sum(n_offense_counts)
+    n_people                  = length(unique(person_id))
+    ,n_offense_counts           = sum(n_offense_counts)
     ,n_convictions             = sum(n_convictions)
     ,n_drug_related            = sum(na.omit(n_drug_related))
     ,n_after_1996              = sum(na.omit(n_after_1996))
     ,n_drug_related_after_1996 = sum(na.omit(n_drug_related_after_1996))
   ) %>% 
-  dplyr::ungroup()
+  dplyr::ungroup() %>% 
+  dplyr::filter(year %in% c(1976:2016)) 
 
-ds_pivot %>% 
-  neat() 
+ds_pivot %>% neat() 
 # ---- basic-pivot -------------------------------------------------------
 
 ds_pivot %>% 
   rpivotTable::rpivotTable(
-    # rows = c("", "county")
-    # , cols = c("year")
+    rows = c("year")
+    , cols = c("drug_after_1996")
     # , vals = "n_trained"
     # , aggregatorName = "Integer Sum"
     # , rendererName = "Heatmap"
@@ -129,15 +204,21 @@ ds_pivot %>%
     # , height="400px"
   )
 
+
+# ---- basic-graph -------------------------------------------
+# g1 <- ds_pivot %>% 
+  
 # ---- publish ---------------------------------
 
 path_report_1 <- "./analysis/eda-2/eda-2.Rmd"
 path_report_2 <- "./analysis/eda-2/eda-2-pivot.Rmd"
+path_report_3 <- "./analysis/eda-2/eda-2-offense-groups.Rmd"
 
 
-# allReports <- c(path_report_1,path_report_2)
-allReports <- c(path_report_1)
+allReports <- c(path_report_1,path_report_2, parth_report_3)
+# allReports <- c(path_report_1)
 # allReports <- c(path_report_2)
+allReports <- c(path_report_3)
 
 pathFilesToBuild <- c(allReports)
 testit::assert("The knitr Rmd files should exist.", base::file.exists(pathFilesToBuild))
@@ -155,7 +236,7 @@ for( pathFile in pathFilesToBuild ) {
 }
 
 
-# ---- basic-graph -------------------------------------------------------
+# ----  -------------------------------------------------------
 
 # ds1 <- dto$person_date_offense_cd %>% 
 #   dplyr::filter(person_id %in% c(46222,65392, 50495) ) %>% # for testing
@@ -194,19 +275,16 @@ for( pathFile in pathFilesToBuild ) {
 #   dplyr::filter(person_id %in% c(46222,65392, 50495) ) %>% 
 #   neat() 
 
-# ---- define-utility-functions ---------------
-
-# ---- save-to-disk ----------------------------
 
 
-# ---- publish ---------------------------------
+# # ----  ---------------------------------
 rmarkdown::render(
   input = "./analysis/eda-2/eda-2.Rmd"
   ,output_format = c(
-    "html_document" 
+    "html_document"
     # "pdf_document"
     # ,"md_document"
-    # "word_document" 
+    # "word_document"
   )
   ,clean=TRUE
 )
